@@ -1,0 +1,15 @@
+{
+  "algorithm": "SHA-256",
+  "artifacts": {
+    "agent-review-brief.zh-CN.md": "19398fd48b24b32b9fbe96be6f743d16318449af1f9760898b17fad9cd28382f",
+    "capture/checksums.json": "099dcd4e34b11300f9e74deccb34e58b3e534230c304dca1cd3e0b250e50d576",
+    "capture/kpr.json": "688d19632cafde14f32c8c688be1655b46174fa21ac9c6e187a83203763d6f3b",
+    "capture/kpr.md": "dd3a52e3c60c3427c7c7466a970048debc965a99b490276a33d057553774ea8c",
+    "capture/live-smoke.json": "038ff02f4d9b30560696d1d8d5660f9bd43864dc6dbbf084e26ed3ec0ff31264",
+    "capture/replay-state.json": "fe15ec483005db4363036aa516d7b563c55d5ebda731dbde02f37d689063d311",
+    "capture/review.md": "6fed08e6170c373a30c610454445cb9e37d086b2c552537f6d7a658cfff8972d",
+    "manifest.json": "bc9b2c34c6cdac9112fbfb361f10bf0dad70fd453409daa9ec15c5d44787ea5e",
+    "review-decision.json": "ad36067c4c0821309126834f7ae6780745024fd2325d933e3a49145226afe311",
+    "review.md": "e415ea6ef1c2906dc387452fd90a6b8ad7978ad7e426471749e9e6f7334a4adf"
+  }
+}

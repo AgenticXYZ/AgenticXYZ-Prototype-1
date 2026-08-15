@@ -1,0 +1,13 @@
+{
+  "algorithm": "FNV-1a 32-bit (artifact integrity, not cryptographic signing)",
+  "artifacts": {
+    "contributor-kpr.json": "fnv1a-100e9535",
+    "contributor-kpr.md": "fnv1a-c01e9ddc",
+    "decisions.json": "fnv1a-e9cbd49b",
+    "events.jsonl": "fnv1a-a0d6e0b9",
+    "integration-contract.json": "fnv1a-d87fbbfc",
+    "manifest.json": "fnv1a-ab36487c",
+    "project-implementation.patch": "fnv1a-98095133",
+    "verification.json": "fnv1a-6cea5a39"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "assetId": "AXP-001",
+  "title": "AgenticXYZ Prototype 1 canonical reference fixture",
+  "northStar": "Agents with People. Human in the Loop.",
+  "metadata": {
+    "fixtureType": "reference_fixture",
+    "provider": "openai",
+    "model": "recorded-reference-model",
+    "runDate": "2026-08-13T20:00:00.000Z",
+    "redactionStatus": "reviewed",
+    "checksum": "fnv1a-1472446b",
+    "evidenceLevel": "E1",
+    "liveValidation": "separate from Provider support evidence"
+  },
+  "warning": "This E1 reference fixture is deterministic and provider-shaped, but is not a credentialed live-provider validation record."
+}

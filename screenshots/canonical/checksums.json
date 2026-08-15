@@ -1,0 +1,16 @@
+{
+  "algorithm": "SHA-256",
+  "viewport": "1920x1080",
+  "artifacts": {
+    "01-system-overview.png": "ee5dc698f6f049e773bdacf7b5763ab9a9c551b7da7e9b12ac333d1d093604b1",
+    "02-user-workspace.png": "fefadc9fed15e8beb373553b94eb7716085b97a4ff6dde2dc9beb3310bf5b418",
+    "03-human-attestation.png": "2af05fdf3089cf759a8b6331d838e2e344533c7acd47aea0e1bbd13a97d31250",
+    "04-decision-brief.png": "2a5dce0e5406104bbe941b2e7b71f30c9697a668283200b70b8a84a0ab9c18d8",
+    "05-knowledge-diff-provenance.png": "2af05fdf3089cf759a8b6331d838e2e344533c7acd47aea0e1bbd13a97d31250",
+    "06-impact-maintainer-shaping.png": "11a353ee64fa97d6a73396c7e6b4ac002cd0ec90dd2f765bca15efbfb190b916",
+    "07-integration-contract.png": "2b1e41d4836c92388e6ebeb4062a412ff9d8e8af3b43c28c7c9506e7b5c08009",
+    "08-behavior-knowledge-evidence-diff.png": "74a4b06c848d58688282c8e723d49608c73fd6d85eb95404f577213d3e550d6b",
+    "09-verification-failure-rollback.png": "59508aeef1338d2560177efb28087a941ccc3c4f7654b6aa61308ff9cfc84550",
+    "10-final-governance.png": "26177495876b6ff595976be768d1e13f57692d78719964c1f29fecbad82f298f"
+  }
+}

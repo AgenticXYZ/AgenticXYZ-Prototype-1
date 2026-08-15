@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agenticxyz.org/schemas/project-manifest/0.1.0",
+  "title": "AgenticXYZ ProjectManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "projectId", "projectVersion", "name", "description", "knowledgeLayers", "capabilities", "mutableSurfaces", "protectedInvariants", "verifierIds", "riskPolicyVersion", "kprSchemaVersion"],
+  "properties": {
+    "schemaVersion": { "const": "0.1.0" },
+    "projectId": { "type": "string", "minLength": 1 },
+    "projectVersion": { "type": "string", "minLength": 1 },
+    "name": { "type": "string", "minLength": 1 },
+    "description": { "type": "string" },
+    "knowledgeLayers": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "label", "authority", "mutableBy"],
+        "properties": {
+          "id": { "type": "string" }, "label": { "type": "string" }, "authority": { "type": "string" },
+          "mutableBy": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "label", "description", "purpose", "inputSchema", "outputSchema", "sideEffects", "permissionLevel", "riskLevel", "reversible", "examples", "failureModes", "humanApprovalRequired", "mutableSurfaces", "verifierIds"],
+        "properties": {
+          "id": { "type": "string" }, "label": { "type": "string" }, "description": { "type": "string" },
+          "purpose": { "type": "string" },
+          "inputSchema": { "type": "object" }, "outputSchema": { "type": "object" },
+          "sideEffects": { "type": "array", "items": { "type": "string" } },
+          "permissionLevel": { "enum": ["R0", "R1", "R2", "R3"] },
+          "riskLevel": { "enum": ["R0", "R1", "R2", "R3"] },
+          "reversible": { "type": "boolean" },
+          "examples": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+          "failureModes": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+          "humanApprovalRequired": { "type": "boolean" },
+          "mutableSurfaces": { "type": "array", "items": { "type": "string" } },
+          "verifierIds": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "mutableSurfaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "label", "category", "protected", "userLocal", "projectConfigurable", "contributable", "reversible"],
+        "properties": {
+          "id": { "type": "string" },
+          "label": { "type": "string" },
+          "category": { "enum": ["resource", "logic", "interface", "preference"] },
+          "protected": { "type": "boolean" },
+          "userLocal": { "type": "boolean" },
+          "projectConfigurable": { "type": "boolean" },
+          "contributable": { "type": "boolean" },
+          "reversible": { "type": "boolean" }
+        }
+      }
+    },
+    "protectedInvariants": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "verifierIds": { "type": "array", "items": { "type": "string" } },
+    "riskPolicyVersion": { "type": "string", "minLength": 1 },
+    "kprSchemaVersion": { "const": "0.1.0" }
+  }
+}

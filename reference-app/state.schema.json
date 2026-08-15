@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agenticxyz.org/reference-app/state/0.1.0",
+  "title": "Research Brief User Realization State",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["document", "overlay"],
+  "properties": {
+    "document": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "question", "conclusion", "context", "evidence", "limitations"],
+      "properties": {
+        "title": { "type": "string" },
+        "question": { "type": "string" },
+        "conclusion": { "type": "string" },
+        "context": { "type": "string" },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "claim", "source", "url"],
+            "properties": { "id": { "type": "string" }, "claim": { "type": "string" }, "source": { "type": "string" }, "url": { "type": "string" } }
+          }
+        },
+        "limitations": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "overlay": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["conclusionFirst", "preserveSources", "theme", "rememberPreference", "scope"],
+          "properties": {
+            "conclusionFirst": { "type": "boolean" },
+            "preserveSources": { "const": true },
+            "theme": { "const": "light" },
+            "rememberPreference": { "type": "boolean" },
+            "scope": { "enum": ["private", "contributable"] }
+          }
+        }
+      ]
+    }
+  }
+}

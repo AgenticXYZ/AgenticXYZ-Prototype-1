@@ -1,0 +1,690 @@
+{
+  "schemaVersion": "0.1.0",
+  "id": "kpr-8230a484-b41b-4624-b5ca-cc7f67c55564",
+  "title": "Optional conclusion-first research briefs",
+  "status": "contributor_review",
+  "problem": "Research Brief readers may need the conclusion before the supporting context.",
+  "scope": [
+    "research-brief",
+    "summary-layout",
+    "user-preference"
+  ],
+  "expectedBehavior": [
+    "Users can opt into a conclusion-first layout.",
+    "Evidence and source links remain visible.",
+    "The preference is saved only after explicit confirmation."
+  ],
+  "acceptanceCriteria": [
+    "Conclusion renders before evidence when the option is enabled.",
+    "All source links remain attached.",
+    "The existing public default remains unchanged.",
+    "Removing the option restores reference behavior."
+  ],
+  "nonGoals": [
+    "Do not make conclusion-first the public default.",
+    "Do not change non-Research-Brief applications.",
+    "Do not adopt the contributor's local code directly."
+  ],
+  "protectedInvariants": [
+    "Source links remain visible and attached to evidence.",
+    "The public default does not change without Maintainer approval.",
+    "Private preferences are not submitted automatically.",
+    "Project Agent completion requires verifier evidence.",
+    "Final public adoption belongs to the Maintainer."
+  ],
+  "knowledgeClaims": [
+    {
+      "createdBy": {
+        "id": "agent-user-side",
+        "type": "agent",
+        "label": "User-side Agent",
+        "role": "user-side"
+      },
+      "derivedFrom": [
+        {
+          "id": "source-user-request",
+          "type": "human_statement",
+          "label": "Contributor request",
+          "timestamp": "2026-08-15T03:03:57.355Z"
+        },
+        {
+          "id": "source-agent-extraction",
+          "type": "agent_extraction",
+          "label": "User-side Agent extraction",
+          "timestamp": "2026-08-15T03:03:57.355Z"
+        },
+        {
+          "id": "source-local-workspace",
+          "type": "workspace",
+          "label": "Verified local overlay",
+          "timestamp": "2026-08-15T03:03:57.355Z"
+        },
+        {
+          "id": "source-contributor-correction-claim-problem",
+          "type": "decision",
+          "label": "Contributor correction of Agent extraction",
+          "timestamp": "2026-08-15T03:03:57.355Z"
+        }
+      ],
+      "agentGenerated": true,
+      "confidence": "high",
+      "status": "human_attested",
+      "conflictsWith": [],
+      "supersedes": [],
+      "limitations": [
+        "Verified in the Research Brief reference scenario only."
+      ],
+      "id": "claim-problem",
+      "type": "problem",
+      "statement": "In this Research Brief scenario, the current layout delays the decision-relevant conclusion until after the supporting context.",
+      "scope": [
+        "research-brief",
+        "summary-layout"
+      ],
+      "evidenceRefs": [
+        "evidence-layout-order"
+      ],
+      "humanAttestation": {
+        "actor": {
+          "id": "human-contributor",
+          "type": "human",
+          "label": "You / Contributor",
+          "role": "contributor"
+        },
+        "statement": "I confirm that these claims accurately represent my request and local verification. I reviewed the submission scope and excluded private information.",
+        "attestedAt": "2026-08-15T03:03:57.355Z",
+        "scope": [
+          "problem",
+          "expected_behavior",
+          "constraints",
+          "local_evidence"
+        ]
+      }
+    },
+    {
+      "createdBy": {
+        "id": "agent-user-side",
+        "type": "agent",
+        "label": "User-side Agent",
+        "role": "user-side"
+      },
+      "derivedFrom": [
+        {
+          "id": "source-user-request",
+          "type": "human_statement",
+          "label": "Contributor request",
+          "timestamp": "2026-08-15T03:03:57.355Z"
+        },
+        {
+          "id": "source-agent-extraction",
+          "type": "agent_extraction",
+          "label": "User-side Agent extraction",
+          "timestamp": "2026-08-15T03:03:57.355Z"
+        },
+        {
+          "id": "source-local-workspace",
+          "type": "workspace",
+          "label": "Verified local overlay",
+          "timestamp": "2026-08-15T03:03:57.355Z"
+        }
+      ],
+      "agentGenerated": true,
+      "confidence": "high",
+      "status": "human_attested",
+      "conflictsWith": [],
+      "supersedes": [],
+      "limitations": [
+        "Verified in the Research Brief reference scenario only."
+      ],
+      "id": "claim-expected-order",
+      "type": "expected_behavior",
+      "statement": "A reader can choose a conclusion-first layout with supporting evidence immediately after it.",
+      "scope": [
+        "research-brief",
+        "summary-layout"
+      ],
+      "evidenceRefs": [
+        "evidence-layout-order"
+      ],
+      "humanAttestation": {
+        "actor": {
+          "id": "human-contributor",
+          "type": "human",
+          "label": "You / Contributor",
+          "role": "contributor"
+        },
+        "statement": "I confirm that these claims accurately represent my request and local verification. I reviewed the submission scope and excluded private information.",
+        "attestedAt": "2026-08-15T03:03:57.355Z",
+        "scope": [
+          "problem",
+          "expected_behavior",
+          "constraints",
+          "local_evidence"
+        ]
+      }
+    },
+    {
+      "createdBy": {
+        "id": "agent-user-side",
+        "type": "agent",
+        "label": "User-side Agent",
+        "role": "user-side"
+      },
+      "derivedFrom": [
+        {
+          "id": "source-user-request",
+          "type": "human_statement",
+          "label": "Contributor request",
+          "timestamp": "2026-08-15T03:03:57.355Z"
+        },
+        {
+          "id": "source-agent-extraction",
+          "type": "agent_extraction",
+          "label": "User-side Agent extraction",
+          "timestamp": "2026-08-15T03:03:57.355Z"
+        },
+        {
+          "id": "source-local-workspace",
+          "type": "workspace",
+          "label": "Verified local overlay",
+          "timestamp": "2026-08-15T03:03:57.355Z"
+        }
+      ],
+      "agentGenerated": true,
+      "confidence": "high",
+      "status": "human_attested",
+      "conflictsWith": [],
+      "supersedes": [],
+      "limitations": [
+        "Verified in the Research Brief reference scenario only."
+      ],
+      "id": "claim-preserve-sources",
+      "type": "constraint",
+      "statement": "Changing the layout must not remove evidence or source links.",
+      "scope": [
+        "research-brief",
+        "sources"
+      ],
+      "evidenceRefs": [
+        "evidence-source-preservation"
+      ],
+      "humanAttestation": {
+        "actor": {
+          "id": "human-contributor",
+          "type": "human",
+          "label": "You / Contributor",
+          "role": "contributor"
+        },
+        "statement": "I confirm that these claims accurately represent my request and local verification. I reviewed the submission scope and excluded private information.",
+        "attestedAt": "2026-08-15T03:03:57.355Z",
+        "scope": [
+          "problem",
+          "expected_behavior",
+          "constraints",
+          "local_evidence"
+        ]
+      }
+    },
+    {
+      "createdBy": {
+        "id": "agent-user-side",
+        "type": "agent",
+        "label": "User-side Agent",
+        "role": "user-side"
+      },
+      "derivedFrom": [
+        {
+          "id": "source-user-request",
+          "type": "human_statement",
+          "label": "Contributor request",
+          "timestamp": "2026-08-15T03:03:57.355Z"
+        },
+        {
+          "id": "source-agent-extraction",
+          "type": "agent_extraction",
+          "label": "User-side Agent extraction",
+          "timestamp": "2026-08-15T03:03:57.355Z"
+        },
+        {
+          "id": "source-local-workspace",
+          "type": "workspace",
+          "label": "Verified local overlay",
+          "timestamp": "2026-08-15T03:03:57.355Z"
+        }
+      ],
+      "agentGenerated": true,
+      "confidence": "high",
+      "status": "human_attested",
+      "conflictsWith": [],
+      "supersedes": [],
+      "limitations": [
+        "Verified in the Research Brief reference scenario only."
+      ],
+      "id": "claim-remember-preference",
+      "type": "intent",
+      "statement": "Remember the conclusion-first layout after the user explicitly confirms it.",
+      "scope": [
+        "user-preference"
+      ],
+      "evidenceRefs": [
+        "evidence-reversible-overlay"
+      ],
+      "humanAttestation": {
+        "actor": {
+          "id": "human-contributor",
+          "type": "human",
+          "label": "You / Contributor",
+          "role": "contributor"
+        },
+        "statement": "I confirm that these claims accurately represent my request and local verification. I reviewed the submission scope and excluded private information.",
+        "attestedAt": "2026-08-15T03:03:57.355Z",
+        "scope": [
+          "problem",
+          "expected_behavior",
+          "constraints",
+          "local_evidence"
+        ]
+      }
+    },
+    {
+      "createdBy": {
+        "id": "agent-user-side",
+        "type": "agent",
+        "label": "User-side Agent",
+        "role": "user-side"
+      },
+      "derivedFrom": [
+        {
+          "id": "source-user-request",
+          "type": "human_statement",
+          "label": "Contributor request",
+          "timestamp": "2026-08-15T03:03:57.355Z"
+        },
+        {
+          "id": "source-agent-extraction",
+          "type": "agent_extraction",
+          "label": "User-side Agent extraction",
+          "timestamp": "2026-08-15T03:03:57.355Z"
+        },
+        {
+          "id": "source-local-workspace",
+          "type": "workspace",
+          "label": "Verified local overlay",
+          "timestamp": "2026-08-15T03:03:57.355Z"
+        }
+      ],
+      "agentGenerated": true,
+      "confidence": "high",
+      "status": "human_attested",
+      "conflictsWith": [],
+      "supersedes": [],
+      "limitations": [
+        "Verified in the Research Brief reference scenario only."
+      ],
+      "id": "claim-local-first",
+      "type": "decision",
+      "statement": "Prove the behavior in a reversible User Overlay before proposing a public capability.",
+      "scope": [
+        "user-realization",
+        "contribution"
+      ],
+      "evidenceRefs": [
+        "evidence-public-core",
+        "evidence-reversible-overlay"
+      ],
+      "humanAttestation": {
+        "actor": {
+          "id": "human-contributor",
+          "type": "human",
+          "label": "You / Contributor",
+          "role": "contributor"
+        },
+        "statement": "I confirm that these claims accurately represent my request and local verification. I reviewed the submission scope and excluded private information.",
+        "attestedAt": "2026-08-15T03:03:57.355Z",
+        "scope": [
+          "problem",
+          "expected_behavior",
+          "constraints",
+          "local_evidence"
+        ]
+      }
+    },
+    {
+      "createdBy": {
+        "id": "agent-user-side",
+        "type": "agent",
+        "label": "User-side Agent",
+        "role": "user-side"
+      },
+      "derivedFrom": [
+        {
+          "id": "source-user-request",
+          "type": "human_statement",
+          "label": "Contributor request",
+          "timestamp": "2026-08-15T03:03:57.355Z"
+        },
+        {
+          "id": "source-agent-extraction",
+          "type": "agent_extraction",
+          "label": "User-side Agent extraction",
+          "timestamp": "2026-08-15T03:03:57.355Z"
+        },
+        {
+          "id": "source-local-workspace",
+          "type": "workspace",
+          "label": "Verified local overlay",
+          "timestamp": "2026-08-15T03:03:57.355Z"
+        }
+      ],
+      "agentGenerated": true,
+      "confidence": "high",
+      "status": "human_attested",
+      "conflictsWith": [],
+      "supersedes": [],
+      "limitations": [
+        "Verified in the Research Brief reference scenario only."
+      ],
+      "id": "claim-invariant-sources",
+      "type": "invariant",
+      "statement": "Every conclusion remains linked to visible supporting evidence and sources.",
+      "scope": [
+        "public-core",
+        "sources"
+      ],
+      "evidenceRefs": [
+        "evidence-source-preservation"
+      ],
+      "humanAttestation": {
+        "actor": {
+          "id": "human-contributor",
+          "type": "human",
+          "label": "You / Contributor",
+          "role": "contributor"
+        },
+        "statement": "I confirm that these claims accurately represent my request and local verification. I reviewed the submission scope and excluded private information.",
+        "attestedAt": "2026-08-15T03:03:57.355Z",
+        "scope": [
+          "problem",
+          "expected_behavior",
+          "constraints",
+          "local_evidence"
+        ]
+      }
+    },
+    {
+      "createdBy": {
+        "id": "agent-user-side",
+        "type": "agent",
+        "label": "User-side Agent",
+        "role": "user-side"
+      },
+      "derivedFrom": [
+        {
+          "id": "source-user-request",
+          "type": "human_statement",
+          "label": "Contributor request",
+          "timestamp": "2026-08-15T03:03:57.355Z"
+        },
+        {
+          "id": "source-agent-extraction",
+          "type": "agent_extraction",
+          "label": "User-side Agent extraction",
+          "timestamp": "2026-08-15T03:03:57.355Z"
+        },
+        {
+          "id": "source-local-workspace",
+          "type": "workspace",
+          "label": "Verified local overlay",
+          "timestamp": "2026-08-15T03:03:57.355Z"
+        }
+      ],
+      "agentGenerated": true,
+      "confidence": "medium",
+      "status": "human_attested",
+      "conflictsWith": [],
+      "supersedes": [],
+      "limitations": [
+        "Verified in the Research Brief reference scenario only."
+      ],
+      "id": "claim-public-capability",
+      "type": "open_question",
+      "statement": "Should the project offer conclusion-first summaries as an optional public capability?",
+      "scope": [
+        "public-product"
+      ],
+      "evidenceRefs": [
+        "evidence-layout-order",
+        "evidence-source-preservation"
+      ],
+      "humanAttestation": {
+        "actor": {
+          "id": "human-contributor",
+          "type": "human",
+          "label": "You / Contributor",
+          "role": "contributor"
+        },
+        "statement": "I confirm that these claims accurately represent my request and local verification. I reviewed the submission scope and excluded private information.",
+        "attestedAt": "2026-08-15T03:03:57.355Z",
+        "scope": [
+          "problem",
+          "expected_behavior",
+          "constraints",
+          "local_evidence"
+        ]
+      }
+    }
+  ],
+  "evidence": [
+    {
+      "id": "evidence-layout-order",
+      "type": "verifier",
+      "title": "Conclusion appears before evidence",
+      "summary": "Rendered section order begins with the conclusion and keeps evidence after it.",
+      "supportsClaimIds": [
+        "claim-problem",
+        "claim-expected-order",
+        "claim-public-capability"
+      ],
+      "result": "pass",
+      "source": {
+        "id": "evidence-layout-order-source",
+        "type": "verifier",
+        "label": "Verifier",
+        "timestamp": "2026-08-15T03:03:57.354Z"
+      },
+      "cannotProve": [
+        "This bounded Verifier does not establish general user benefit, production safety, or lower Maintainer workload."
+      ],
+      "replayable": true,
+      "humanConfirmed": false,
+      "handling": "Reference-application evidence; eligible for public export only after the KPR privacy scan passes.",
+      "details": {
+        "conclusionFirst": true
+      }
+    },
+    {
+      "id": "evidence-source-preservation",
+      "type": "verifier",
+      "title": "Sources are preserved",
+      "summary": "All reference sources remain attached.",
+      "supportsClaimIds": [
+        "claim-preserve-sources",
+        "claim-invariant-sources",
+        "claim-public-capability"
+      ],
+      "result": "pass",
+      "source": {
+        "id": "evidence-source-preservation-source",
+        "type": "verifier",
+        "label": "Verifier",
+        "timestamp": "2026-08-15T03:03:57.354Z"
+      },
+      "cannotProve": [
+        "This bounded Verifier does not establish general user benefit, production safety, or lower Maintainer workload."
+      ],
+      "replayable": true,
+      "humanConfirmed": false,
+      "handling": "Reference-application evidence; eligible for public export only after the KPR privacy scan passes.",
+      "details": {
+        "sourceCount": 3,
+        "expectedSourceCount": 3
+      }
+    },
+    {
+      "id": "evidence-public-core",
+      "type": "verifier",
+      "title": "Public core remains unchanged",
+      "summary": "The proposed change is isolated to the User Realization layer.",
+      "supportsClaimIds": [
+        "claim-local-first"
+      ],
+      "result": "pass",
+      "source": {
+        "id": "evidence-public-core-source",
+        "type": "verifier",
+        "label": "Verifier",
+        "timestamp": "2026-08-15T03:03:57.354Z"
+      },
+      "cannotProve": [
+        "This bounded Verifier does not establish general user benefit, production safety, or lower Maintainer workload."
+      ],
+      "replayable": true,
+      "humanConfirmed": false,
+      "handling": "Reference-application evidence; eligible for public export only after the KPR privacy scan passes.",
+      "details": {
+        "referenceChecksum": "fnv1a-76b6d301",
+        "layer": "user_overlay"
+      }
+    },
+    {
+      "id": "evidence-reversible-overlay",
+      "type": "verifier",
+      "title": "Overlay is reversible",
+      "summary": "A checkpoint exists and removing the overlay restores the reference behavior.",
+      "supportsClaimIds": [
+        "claim-local-first",
+        "claim-remember-preference"
+      ],
+      "result": "pass",
+      "source": {
+        "id": "evidence-reversible-overlay-source",
+        "type": "verifier",
+        "label": "Verifier",
+        "timestamp": "2026-08-15T03:03:57.354Z"
+      },
+      "cannotProve": [
+        "This bounded Verifier does not establish general user benefit, production safety, or lower Maintainer workload."
+      ],
+      "replayable": true,
+      "humanConfirmed": false,
+      "handling": "Reference-application evidence; eligible for public export only after the KPR privacy scan passes.",
+      "details": {
+        "rollbackTarget": "checkpoint-user-before-overlay"
+      }
+    }
+  ],
+  "decisionRecord": [
+    {
+      "id": "decision-local-overlay",
+      "actor": {
+        "id": "human-contributor",
+        "type": "human",
+        "label": "You / Contributor",
+        "role": "contributor"
+      },
+      "action": "Approved reversible local overlay",
+      "rationale": "Validate the need before asking the public project to change.",
+      "timestamp": "2026-08-15T03:03:57.355Z"
+    },
+    {
+      "id": "decision-contributor-correction-claim-problem",
+      "actor": {
+        "id": "human-contributor",
+        "type": "human",
+        "label": "You / Contributor",
+        "role": "contributor"
+      },
+      "action": "Corrected Agent-extracted claim claim-problem",
+      "rationale": "Changed the Agent wording from “The current brief makes readers traverse context before they see the decision-relevant conclusion.” to “In this Research Brief scenario, the current layout delays the decision-relevant conclusion until after the supporting context.”.",
+      "timestamp": "2026-08-15T03:03:57.355Z"
+    },
+    {
+      "id": "decision-contributor-attestation",
+      "actor": {
+        "id": "human-contributor",
+        "type": "human",
+        "label": "You / Contributor",
+        "role": "contributor"
+      },
+      "action": "Attested the reviewed KPR knowledge",
+      "rationale": "The Contributor reviewed the Agent extraction, optionally corrected wording that needed revision, and confirmed the selected contribution scope.",
+      "timestamp": "2026-08-15T03:03:57.355Z"
+    }
+  ],
+  "failedAttempts": [
+    "A conclusion-only layout was rejected because it hid evidence and violated the source invariant."
+  ],
+  "openQuestions": [
+    "Should the capability remain experimental until more document types are evaluated?"
+  ],
+  "provenance": [
+    {
+      "id": "source-user-request",
+      "type": "human_statement",
+      "label": "Contributor request",
+      "timestamp": "2026-08-15T03:03:57.355Z"
+    },
+    {
+      "id": "source-agent-extraction",
+      "type": "agent_extraction",
+      "label": "User-side Agent extraction",
+      "timestamp": "2026-08-15T03:03:57.355Z"
+    },
+    {
+      "id": "source-local-workspace",
+      "type": "workspace",
+      "label": "Verified local overlay",
+      "timestamp": "2026-08-15T03:03:57.355Z"
+    },
+    {
+      "id": "source-project-policy",
+      "type": "policy",
+      "label": "Research Brief Project Policy",
+      "timestamp": "2026-08-15T03:03:57.355Z"
+    }
+  ],
+  "privacyAndLicense": {
+    "privacyScan": {
+      "status": "pass",
+      "findings": [],
+      "scannedAt": "2026-08-15T03:03:57.355Z"
+    },
+    "license": "MIT contribution",
+    "contributorOwnsContent": true
+  },
+  "humanAttestation": {
+    "actor": {
+      "id": "human-contributor",
+      "type": "human",
+      "label": "You / Contributor",
+      "role": "contributor"
+    },
+    "statement": "I confirm that these claims accurately represent my request and local verification. I reviewed the submission scope and excluded private information.",
+    "attestedAt": "2026-08-15T03:03:57.355Z",
+    "scope": [
+      "problem",
+      "expected_behavior",
+      "constraints",
+      "local_evidence"
+    ]
+  },
+  "localImplementationReference": {
+    "workspaceId": "workspace-user",
+    "summary": "Reversible JSON overlay changing layout and confirmed preference behavior.",
+    "visibleToProjectAgent": false
+  },
+  "impactAnalysis": [],
+  "claimResolutions": [],
+  "createdAt": "2026-08-15T03:03:57.355Z",
+  "updatedAt": "2026-08-15T03:03:57.355Z"
+}

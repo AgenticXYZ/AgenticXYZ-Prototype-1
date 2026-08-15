@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agenticxyz.org/schemas/agent-run/0.1.0",
+  "title": "AgenticXYZ AgentRun",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "mode", "role", "skillId", "status", "startedAt", "events", "budget"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "mode": { "enum": ["replay", "scripted", "live"] },
+    "role": { "enum": ["user-side", "maintainer-side", "project"] },
+    "skillId": { "type": "string", "minLength": 1 },
+    "provider": { "enum": ["openai", "anthropic", "deepseek"] },
+    "model": { "type": "string" },
+    "status": { "enum": ["idle", "running", "waiting_for_human", "completed", "failed", "cancelled"] },
+    "startedAt": { "type": "string", "format": "date-time" },
+    "completedAt": { "type": "string", "format": "date-time" },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "sequence", "timestamp", "type", "plane", "title", "summary", "actor"],
+        "properties": {
+          "id": { "type": "string" }, "sequence": { "type": "integer", "minimum": 1 },
+          "timestamp": { "type": "string", "format": "date-time" }, "type": { "type": "string" },
+          "plane": { "enum": ["context", "policy", "action", "proof", "memory"] },
+          "title": { "type": "string" }, "summary": { "type": "string" }, "actor": { "type": "object" },
+          "riskLevel": { "enum": ["R0", "R1", "R2", "R3"] }, "payload": { "type": "object" }
+        }
+      }
+    },
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["maxProviderCalls", "providerCallsUsed", "maxToolCalls", "maxDurationMs", "toolCallsUsed", "maxInputTokens", "maxOutputTokens", "maxRetries", "retriesUsed"],
+      "properties": {
+        "maxProviderCalls": { "type": "integer", "minimum": 1 }, "providerCallsUsed": { "type": "integer", "minimum": 0 },
+        "maxToolCalls": { "type": "integer", "minimum": 1 }, "maxDurationMs": { "type": "integer", "minimum": 0 },
+        "toolCallsUsed": { "type": "integer", "minimum": 0 },
+        "maxInputTokens": { "type": "integer", "minimum": 1 }, "maxOutputTokens": { "type": "integer", "minimum": 1 },
+        "maxRetries": { "type": "integer", "minimum": 0 }, "retriesUsed": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "terminationReason": { "type": "string" },
+    "usage": { "type": "object" }
+  }
+}

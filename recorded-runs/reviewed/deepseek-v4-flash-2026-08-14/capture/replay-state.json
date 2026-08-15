@@ -1,0 +1,3059 @@
+{
+  "version": "0.1.0",
+  "activeView": "developer",
+  "mode": "replay",
+  "providerConfig": {
+    "provider": "deepseek",
+    "model": "deepseek-v4-flash",
+    "available": false,
+    "source": "none"
+  },
+  "guidedStep": 8,
+  "manifest": {
+    "schemaVersion": "0.1.0",
+    "projectId": "research-brief",
+    "projectVersion": "0.1.0",
+    "name": "Research Brief",
+    "description": "A source-preserving application for concise research briefs.",
+    "knowledgeLayers": [
+      {
+        "id": "developer-intent",
+        "label": "Developer Intent / Policy",
+        "authority": "Project maintainer",
+        "mutableBy": [
+          "maintainer"
+        ]
+      },
+      {
+        "id": "reference-core",
+        "label": "Reference Capability Core",
+        "authority": "Project repository",
+        "mutableBy": [
+          "project"
+        ]
+      },
+      {
+        "id": "user-realization",
+        "label": "User Realization / Overlay",
+        "authority": "Local user",
+        "mutableBy": [
+          "user-side",
+          "contributor"
+        ]
+      }
+    ],
+    "capabilities": [
+      {
+        "id": "render_brief",
+        "label": "Render research brief",
+        "description": "Render context, conclusion, evidence, sources, and limitations.",
+        "purpose": "Render a source-preserving Research Brief using the reference behavior or an approved local overlay.",
+        "inputSchema": {
+          "type": "object",
+          "required": [
+            "document"
+          ]
+        },
+        "outputSchema": {
+          "type": "object",
+          "required": [
+            "sections",
+            "sourceCount"
+          ]
+        },
+        "sideEffects": [],
+        "permissionLevel": "R0",
+        "riskLevel": "R0",
+        "reversible": true,
+        "examples": [
+          "Render the reference brief while keeping every source link visible."
+        ],
+        "failureModes": [
+          "A required section is missing.",
+          "A conclusion is shown without linked evidence."
+        ],
+        "humanApprovalRequired": false,
+        "mutableSurfaces": [
+          "summary-layout"
+        ],
+        "verifierIds": [
+          "source-preservation",
+          "required-sections"
+        ]
+      },
+      {
+        "id": "configure_summary_layout",
+        "label": "Configure summary layout",
+        "description": "Change the order in which the conclusion and evidence are presented.",
+        "purpose": "Create a reversible User Overlay for conclusion-first presentation and confirmed preference memory.",
+        "inputSchema": {
+          "type": "object",
+          "required": [
+            "conclusionFirst"
+          ]
+        },
+        "outputSchema": {
+          "type": "object",
+          "required": [
+            "overlay"
+          ]
+        },
+        "sideEffects": [
+          "Writes a local User Overlay after Contributor approval."
+        ],
+        "permissionLevel": "R1",
+        "riskLevel": "R1",
+        "reversible": true,
+        "examples": [
+          "Put the conclusion first for this user without changing the public default."
+        ],
+        "failureModes": [
+          "The overlay changes the protected public core.",
+          "Sources are removed.",
+          "The preference is saved without confirmation."
+        ],
+        "humanApprovalRequired": true,
+        "mutableSurfaces": [
+          "summary-layout",
+          "preference-memory"
+        ],
+        "verifierIds": [
+          "source-preservation",
+          "public-core-unchanged",
+          "reversible-overlay"
+        ]
+      }
+    ],
+    "mutableSurfaces": [
+      {
+        "id": "summary-layout",
+        "label": "Summary layout",
+        "category": "interface",
+        "protected": false,
+        "userLocal": true,
+        "projectConfigurable": true,
+        "contributable": true,
+        "reversible": true
+      },
+      {
+        "id": "theme",
+        "label": "Reference visual theme",
+        "category": "interface",
+        "protected": true,
+        "userLocal": false,
+        "projectConfigurable": true,
+        "contributable": false,
+        "reversible": true
+      },
+      {
+        "id": "preference-memory",
+        "label": "Confirmed preference memory",
+        "category": "preference",
+        "protected": false,
+        "userLocal": true,
+        "projectConfigurable": false,
+        "contributable": true,
+        "reversible": true
+      }
+    ],
+    "protectedInvariants": [
+      "Source links remain visible and attached to evidence.",
+      "The public default does not change without Maintainer approval.",
+      "Private preferences are not submitted automatically.",
+      "Project Agent completion requires verifier evidence.",
+      "Final public adoption belongs to the Maintainer."
+    ],
+    "verifierIds": [
+      "source-preservation",
+      "required-sections",
+      "public-core-unchanged",
+      "reversible-overlay",
+      "unsupported-conclusion",
+      "human-attestation",
+      "privacy-scan",
+      "project-default-stability",
+      "project-source-preservation",
+      "project-scope-boundary",
+      "project-confirmation",
+      "project-unsupported-conclusion"
+    ],
+    "riskPolicyVersion": "0.1.0",
+    "kprSchemaVersion": "0.1.0"
+  },
+  "policy": {
+    "schemaVersion": "0.1.0",
+    "projectId": "research-brief",
+    "productPrinciples": [
+      {
+        "id": "product-source-visible",
+        "category": "product",
+        "title": "Sources stay visible",
+        "statement": "Every public brief must preserve evidence and source links.",
+        "effect": "require_verification",
+        "appliesTo": [
+          "user-side",
+          "maintainer-side",
+          "project"
+        ]
+      },
+      {
+        "id": "product-default-stable",
+        "category": "product",
+        "title": "Public defaults remain stable",
+        "statement": "A single user preference cannot silently become the public default.",
+        "effect": "require_approval",
+        "appliesTo": [
+          "maintainer-side",
+          "project"
+        ]
+      }
+    ],
+    "safetyRules": [
+      {
+        "id": "safety-no-shell",
+        "category": "safety",
+        "title": "No arbitrary shell",
+        "statement": "Agents may only use allowlisted structured tools.",
+        "effect": "deny",
+        "appliesTo": [
+          "user-side",
+          "maintainer-side",
+          "project"
+        ]
+      },
+      {
+        "id": "safety-verifier-completion",
+        "category": "safety",
+        "title": "Verifiers determine completion",
+        "statement": "An Agent message cannot mark a change complete without required verifier results.",
+        "effect": "require_verification",
+        "appliesTo": [
+          "user-side",
+          "project"
+        ]
+      }
+    ],
+    "privacyRules": [
+      {
+        "id": "privacy-private-overlay",
+        "category": "privacy",
+        "title": "Private overlay stays local",
+        "statement": "Private preferences are excluded from a KPR unless the contributor explicitly selects them.",
+        "effect": "deny",
+        "appliesTo": [
+          "user-side",
+          "maintainer-side",
+          "project"
+        ]
+      },
+      {
+        "id": "privacy-scan-before-submit",
+        "category": "privacy",
+        "title": "Scan before submission",
+        "statement": "KPR submission is blocked until privacy and secret scanning passes.",
+        "effect": "require_verification",
+        "appliesTo": [
+          "user-side"
+        ]
+      }
+    ],
+    "contributionRules": [
+      {
+        "id": "contribution-attestation",
+        "category": "contribution",
+        "title": "Human attestation required",
+        "statement": "Agent-extracted claims cannot be submitted as user requirements without contributor attestation.",
+        "effect": "require_approval",
+        "appliesTo": [
+          "user-side"
+        ]
+      },
+      {
+        "id": "contribution-blind-reconstruction",
+        "category": "contribution",
+        "title": "Blind reconstruction",
+        "statement": "The Project Agent implements from the approved contract, not the contributor patch.",
+        "effect": "deny",
+        "appliesTo": [
+          "project"
+        ]
+      }
+    ],
+    "runtimeRules": [
+      {
+        "id": "runtime-one-provider",
+        "category": "runtime",
+        "title": "One active provider",
+        "statement": "All Agent roles use the same provider and model within a guided run.",
+        "effect": "allow",
+        "appliesTo": [
+          "user-side",
+          "maintainer-side",
+          "project"
+        ]
+      },
+      {
+        "id": "runtime-r3-human",
+        "category": "runtime",
+        "title": "Human approval for public state",
+        "statement": "Public adoption and merge remain human decisions.",
+        "effect": "require_approval",
+        "appliesTo": [
+          "project"
+        ]
+      }
+    ],
+    "approvalRules": [
+      {
+        "id": "approval-user-overlay",
+        "action": "Apply a reversible User Overlay",
+        "riskLevel": "R1",
+        "requiredActor": "contributor"
+      },
+      {
+        "id": "approval-integration-contract",
+        "action": "Approve Claim Resolutions and the Knowledge Integration Contract",
+        "riskLevel": "R2",
+        "requiredActor": "maintainer"
+      },
+      {
+        "id": "approval-public-adoption",
+        "action": "Adopt a verified Project candidate into public state",
+        "riskLevel": "R3",
+        "requiredActor": "maintainer"
+      }
+    ],
+    "evidenceRequirements": [
+      {
+        "id": "evidence-user-overlay",
+        "appliesTo": "user_overlay",
+        "verifierIds": [
+          "source-preservation",
+          "public-core-unchanged",
+          "reversible-overlay"
+        ]
+      },
+      {
+        "id": "evidence-knowledge-gate",
+        "appliesTo": "knowledge_gate",
+        "verifierIds": [
+          "human-attestation",
+          "privacy-scan"
+        ]
+      },
+      {
+        "id": "evidence-project-candidate",
+        "appliesTo": "project_candidate",
+        "verifierIds": [
+          "project-default-stability",
+          "project-source-preservation",
+          "project-scope-boundary",
+          "project-confirmation",
+          "project-unsupported-conclusion"
+        ]
+      }
+    ],
+    "protectedInvariants": [
+      "Source links remain visible and attached to evidence.",
+      "The public default does not change without Maintainer approval.",
+      "Private preferences are not submitted automatically.",
+      "Project Agent completion requires verifier evidence.",
+      "Final public adoption belongs to the Maintainer."
+    ],
+    "defaultBehavior": {
+      "conclusionFirst": false,
+      "preserveSources": true,
+      "theme": "light",
+      "savePreference": false
+    }
+  },
+  "brief": {
+    "title": "Do smaller language models belong in local research workflows?",
+    "question": "When should a research team prefer a smaller local model over a hosted frontier model?",
+    "conclusion": "Use a smaller local model when privacy, predictable cost, or offline availability matters more than frontier reasoning quality; keep a hosted model available for the hardest synthesis and verification tasks.",
+    "context": "Research teams increasingly mix local and hosted models. The decision is not a single quality ranking: it depends on data sensitivity, latency, hardware, task difficulty, and the cost of verification.",
+    "evidence": [
+      {
+        "id": "source-1",
+        "claim": "Local inference can keep sensitive prompts inside a controlled environment.",
+        "source": "Project privacy notes",
+        "url": "project://knowledge/privacy-notes"
+      },
+      {
+        "id": "source-2",
+        "claim": "Hosted frontier models remain stronger on difficult synthesis tasks in the reference evaluation.",
+        "source": "Reference evaluation v0.1",
+        "url": "project://evidence/reference-eval"
+      },
+      {
+        "id": "source-3",
+        "claim": "The total cost depends on utilization and local hardware, not token price alone.",
+        "source": "Cost model assumptions",
+        "url": "project://knowledge/cost-model"
+      }
+    ],
+    "limitations": [
+      "The reference evaluation is illustrative, not a comprehensive model benchmark.",
+      "Local deployment still requires security updates and operational expertise."
+    ]
+  },
+  "userRequest": "Put the conclusion first, keep the supporting evidence and sources visible, preserve the light and simple interface, and remember this as my preference.",
+  "userWorkspace": {
+    "id": "workspace-user",
+    "ownerRole": "user-side",
+    "status": "verified",
+    "baseVersion": "0.1.0",
+    "files": [
+      {
+        "path": "research-brief.json",
+        "content": "{\n  \"document\": {\n    \"title\": \"Do smaller language models belong in local research workflows?\",\n    \"question\": \"When should a research team prefer a smaller local model over a hosted frontier model?\",\n    \"conclusion\": \"Use a smaller local model when privacy, predictable cost, or offline availability matters more than frontier reasoning quality; keep a hosted model available for the hardest synthesis and verification tasks.\",\n    \"context\": \"Research teams increasingly mix local and hosted models. The decision is not a single quality ranking: it depends on data sensitivity, latency, hardware, task difficulty, and the cost of verification.\",\n    \"evidence\": [\n      {\n        \"id\": \"source-1\",\n        \"claim\": \"Local inference can keep sensitive prompts inside a controlled environment.\",\n        \"source\": \"Project privacy notes\",\n        \"url\": \"project://knowledge/privacy-notes\"\n      },\n      {\n        \"id\": \"source-2\",\n        \"claim\": \"Hosted frontier models remain stronger on difficult synthesis tasks in the reference evaluation.\",\n        \"source\": \"Reference evaluation v0.1\",\n        \"url\": \"project://evidence/reference-eval\"\n      },\n      {\n        \"id\": \"source-3\",\n        \"claim\": \"The total cost depends on utilization and local hardware, not token price alone.\",\n        \"source\": \"Cost model assumptions\",\n        \"url\": \"project://knowledge/cost-model\"\n      }\n    ],\n    \"limitations\": [\n      \"The reference evaluation is illustrative, not a comprehensive model benchmark.\",\n      \"Local deployment still requires security updates and operational expertise.\"\n    ]\n  },\n  \"overlay\": null\n}",
+        "layer": "reference",
+        "checksum": "fnv1a-45927a3f"
+      },
+      {
+        "path": "user-overlay.json",
+        "content": "{\n  \"conclusionFirst\": true,\n  \"preserveSources\": true,\n  \"theme\": \"light\",\n  \"rememberPreference\": true,\n  \"scope\": \"private\"\n}",
+        "layer": "user_overlay",
+        "checksum": "fnv1a-b52e5294"
+      }
+    ],
+    "checkpoints": [
+      {
+        "id": "checkpoint-user-before-overlay",
+        "label": "Before User Overlay",
+        "createdAt": "2026-08-14T08:57:03.604Z",
+        "files": [
+          {
+            "path": "research-brief.json",
+            "content": "{\n  \"document\": {\n    \"title\": \"Do smaller language models belong in local research workflows?\",\n    \"question\": \"When should a research team prefer a smaller local model over a hosted frontier model?\",\n    \"conclusion\": \"Use a smaller local model when privacy, predictable cost, or offline availability matters more than frontier reasoning quality; keep a hosted model available for the hardest synthesis and verification tasks.\",\n    \"context\": \"Research teams increasingly mix local and hosted models. The decision is not a single quality ranking: it depends on data sensitivity, latency, hardware, task difficulty, and the cost of verification.\",\n    \"evidence\": [\n      {\n        \"id\": \"source-1\",\n        \"claim\": \"Local inference can keep sensitive prompts inside a controlled environment.\",\n        \"source\": \"Project privacy notes\",\n        \"url\": \"project://knowledge/privacy-notes\"\n      },\n      {\n        \"id\": \"source-2\",\n        \"claim\": \"Hosted frontier models remain stronger on difficult synthesis tasks in the reference evaluation.\",\n        \"source\": \"Reference evaluation v0.1\",\n        \"url\": \"project://evidence/reference-eval\"\n      },\n      {\n        \"id\": \"source-3\",\n        \"claim\": \"The total cost depends on utilization and local hardware, not token price alone.\",\n        \"source\": \"Cost model assumptions\",\n        \"url\": \"project://knowledge/cost-model\"\n      }\n    ],\n    \"limitations\": [\n      \"The reference evaluation is illustrative, not a comprehensive model benchmark.\",\n      \"Local deployment still requires security updates and operational expertise.\"\n    ]\n  },\n  \"overlay\": null\n}",
+            "layer": "reference",
+            "checksum": "fnv1a-45927a3f"
+          }
+        ]
+      }
+    ],
+    "verifierResults": [
+      {
+        "id": "evidence-layout-order",
+        "type": "verifier",
+        "title": "Conclusion appears before evidence",
+        "summary": "Rendered section order begins with the conclusion and keeps evidence after it.",
+        "supportsClaimIds": [
+          "claim-problem",
+          "claim-expected-order",
+          "claim-public-capability"
+        ],
+        "result": "pass",
+        "source": {
+          "id": "evidence-layout-order-source",
+          "type": "verifier",
+          "label": "Verifier",
+          "timestamp": "2026-08-14T08:57:03.604Z"
+        },
+        "cannotProve": [
+          "This bounded Verifier does not establish general user benefit, production safety, or lower Maintainer workload."
+        ],
+        "replayable": true,
+        "humanConfirmed": false,
+        "handling": "Reference-application evidence; eligible for public export only after the KPR privacy scan passes.",
+        "details": {
+          "conclusionFirst": true
+        }
+      },
+      {
+        "id": "evidence-source-preservation",
+        "type": "verifier",
+        "title": "Sources are preserved",
+        "summary": "All 3 reference sources remain attached.",
+        "supportsClaimIds": [
+          "claim-preserve-sources",
+          "claim-invariant-sources",
+          "claim-public-capability"
+        ],
+        "result": "pass",
+        "source": {
+          "id": "evidence-source-preservation-source",
+          "type": "verifier",
+          "label": "Verifier",
+          "timestamp": "2026-08-14T08:57:03.604Z"
+        },
+        "cannotProve": [
+          "This bounded Verifier does not establish general user benefit, production safety, or lower Maintainer workload."
+        ],
+        "replayable": true,
+        "humanConfirmed": false,
+        "handling": "Reference-application evidence; eligible for public export only after the KPR privacy scan passes.",
+        "details": {
+          "sourceCount": 3,
+          "expectedSourceCount": 3
+        }
+      },
+      {
+        "id": "evidence-public-core",
+        "type": "verifier",
+        "title": "Public core remains unchanged",
+        "summary": "The proposed change is isolated to the User Realization layer.",
+        "supportsClaimIds": [
+          "claim-local-first"
+        ],
+        "result": "pass",
+        "source": {
+          "id": "evidence-public-core-source",
+          "type": "verifier",
+          "label": "Verifier",
+          "timestamp": "2026-08-14T08:57:03.614Z"
+        },
+        "cannotProve": [
+          "This bounded Verifier does not establish general user benefit, production safety, or lower Maintainer workload."
+        ],
+        "replayable": true,
+        "humanConfirmed": false,
+        "handling": "Reference-application evidence; eligible for public export only after the KPR privacy scan passes.",
+        "details": {
+          "referenceChecksum": "fnv1a-76b6d301",
+          "layer": "user_overlay"
+        }
+      },
+      {
+        "id": "evidence-reversible-overlay",
+        "type": "verifier",
+        "title": "Overlay is reversible",
+        "summary": "A checkpoint exists and removing the overlay restores the reference behavior.",
+        "supportsClaimIds": [
+          "claim-local-first",
+          "claim-remember-preference"
+        ],
+        "result": "pass",
+        "source": {
+          "id": "evidence-reversible-overlay-source",
+          "type": "verifier",
+          "label": "Verifier",
+          "timestamp": "2026-08-14T08:57:03.614Z"
+        },
+        "cannotProve": [
+          "This bounded Verifier does not establish general user benefit, production safety, or lower Maintainer workload."
+        ],
+        "replayable": true,
+        "humanConfirmed": false,
+        "handling": "Reference-application evidence; eligible for public export only after the KPR privacy scan passes.",
+        "details": {
+          "rollbackTarget": "checkpoint-user-before-overlay"
+        }
+      }
+    ]
+  },
+  "projectWorkspace": {
+    "id": "workspace-project",
+    "ownerRole": "project",
+    "status": "verified",
+    "baseVersion": "0.1.0",
+    "files": [
+      {
+        "path": "research-brief.json",
+        "content": "{\n  \"document\": {\n    \"title\": \"Do smaller language models belong in local research workflows?\",\n    \"question\": \"When should a research team prefer a smaller local model over a hosted frontier model?\",\n    \"conclusion\": \"Use a smaller local model when privacy, predictable cost, or offline availability matters more than frontier reasoning quality; keep a hosted model available for the hardest synthesis and verification tasks.\",\n    \"context\": \"Research teams increasingly mix local and hosted models. The decision is not a single quality ranking: it depends on data sensitivity, latency, hardware, task difficulty, and the cost of verification.\",\n    \"evidence\": [\n      {\n        \"id\": \"source-1\",\n        \"claim\": \"Local inference can keep sensitive prompts inside a controlled environment.\",\n        \"source\": \"Project privacy notes\",\n        \"url\": \"project://knowledge/privacy-notes\"\n      },\n      {\n        \"id\": \"source-2\",\n        \"claim\": \"Hosted frontier models remain stronger on difficult synthesis tasks in the reference evaluation.\",\n        \"source\": \"Reference evaluation v0.1\",\n        \"url\": \"project://evidence/reference-eval\"\n      },\n      {\n        \"id\": \"source-3\",\n        \"claim\": \"The total cost depends on utilization and local hardware, not token price alone.\",\n        \"source\": \"Cost model assumptions\",\n        \"url\": \"project://knowledge/cost-model\"\n      }\n    ],\n    \"limitations\": [\n      \"The reference evaluation is illustrative, not a comprehensive model benchmark.\",\n      \"Local deployment still requires security updates and operational expertise.\"\n    ]\n  },\n  \"overlay\": null\n}",
+        "layer": "reference",
+        "checksum": "fnv1a-45927a3f"
+      },
+      {
+        "path": "capabilities/conclusion-first.json",
+        "content": "{\n  \"featureId\": \"conclusion-first-summary\",\n  \"label\": \"Conclusion-first summary (experimental, opt-in)\",\n  \"enabledByDefault\": false,\n  \"applicableDocumentTypes\": [\n    \"research-brief\"\n  ],\n  \"preserveSources\": true,\n  \"saveOnlyAfterConfirmation\": true,\n  \"rollout\": \"experimental\"\n}",
+        "layer": "project_candidate",
+        "checksum": "fnv1a-c1e61241"
+      }
+    ],
+    "checkpoints": [
+      {
+        "id": "checkpoint-project-before-candidate",
+        "label": "Before Project Candidate",
+        "createdAt": "2026-08-14T08:58:57.363Z",
+        "files": [
+          {
+            "path": "research-brief.json",
+            "content": "{\n  \"document\": {\n    \"title\": \"Do smaller language models belong in local research workflows?\",\n    \"question\": \"When should a research team prefer a smaller local model over a hosted frontier model?\",\n    \"conclusion\": \"Use a smaller local model when privacy, predictable cost, or offline availability matters more than frontier reasoning quality; keep a hosted model available for the hardest synthesis and verification tasks.\",\n    \"context\": \"Research teams increasingly mix local and hosted models. The decision is not a single quality ranking: it depends on data sensitivity, latency, hardware, task difficulty, and the cost of verification.\",\n    \"evidence\": [\n      {\n        \"id\": \"source-1\",\n        \"claim\": \"Local inference can keep sensitive prompts inside a controlled environment.\",\n        \"source\": \"Project privacy notes\",\n        \"url\": \"project://knowledge/privacy-notes\"\n      },\n      {\n        \"id\": \"source-2\",\n        \"claim\": \"Hosted frontier models remain stronger on difficult synthesis tasks in the reference evaluation.\",\n        \"source\": \"Reference evaluation v0.1\",\n        \"url\": \"project://evidence/reference-eval\"\n      },\n      {\n        \"id\": \"source-3\",\n        \"claim\": \"The total cost depends on utilization and local hardware, not token price alone.\",\n        \"source\": \"Cost model assumptions\",\n        \"url\": \"project://knowledge/cost-model\"\n      }\n    ],\n    \"limitations\": [\n      \"The reference evaluation is illustrative, not a comprehensive model benchmark.\",\n      \"Local deployment still requires security updates and operational expertise.\"\n    ]\n  },\n  \"overlay\": null\n}",
+            "layer": "reference",
+            "checksum": "fnv1a-45927a3f"
+          }
+        ]
+      }
+    ],
+    "verifierResults": [
+      {
+        "id": "project-default-stability",
+        "type": "verifier",
+        "title": "Public default remains unchanged",
+        "summary": "The capability is opt-in.",
+        "supportsClaimIds": [
+          "claim-public-capability"
+        ],
+        "result": "pass",
+        "source": {
+          "id": "project-default-stability-source",
+          "type": "verifier",
+          "label": "Verifier",
+          "timestamp": "2026-08-14T08:58:57.363Z"
+        },
+        "cannotProve": [
+          "This bounded Verifier does not establish general user benefit, production safety, or lower Maintainer workload."
+        ],
+        "replayable": true,
+        "humanConfirmed": false,
+        "handling": "Reference-application evidence; eligible for public export only after the KPR privacy scan passes."
+      },
+      {
+        "id": "project-source-preservation",
+        "type": "verifier",
+        "title": "Source invariant",
+        "summary": "Sources remain visible in the candidate behavior.",
+        "supportsClaimIds": [
+          "claim-invariant-sources"
+        ],
+        "result": "pass",
+        "source": {
+          "id": "project-source-preservation-source",
+          "type": "verifier",
+          "label": "Verifier",
+          "timestamp": "2026-08-14T08:58:57.363Z"
+        },
+        "cannotProve": [
+          "This bounded Verifier does not establish general user benefit, production safety, or lower Maintainer workload."
+        ],
+        "replayable": true,
+        "humanConfirmed": false,
+        "handling": "Reference-application evidence; eligible for public export only after the KPR privacy scan passes."
+      },
+      {
+        "id": "project-scope-boundary",
+        "type": "verifier",
+        "title": "Scope is narrow",
+        "summary": "The feature applies only to Research Brief documents.",
+        "supportsClaimIds": [
+          "claim-public-capability"
+        ],
+        "result": "pass",
+        "source": {
+          "id": "project-scope-boundary-source",
+          "type": "verifier",
+          "label": "Verifier",
+          "timestamp": "2026-08-14T08:58:57.363Z"
+        },
+        "cannotProve": [
+          "This bounded Verifier does not establish general user benefit, production safety, or lower Maintainer workload."
+        ],
+        "replayable": true,
+        "humanConfirmed": false,
+        "handling": "Reference-application evidence; eligible for public export only after the KPR privacy scan passes."
+      },
+      {
+        "id": "project-confirmation",
+        "type": "verifier",
+        "title": "Preference requires confirmation",
+        "summary": "Preference is saved only after user confirmation.",
+        "supportsClaimIds": [
+          "claim-remember-preference"
+        ],
+        "result": "pass",
+        "source": {
+          "id": "project-confirmation-source",
+          "type": "verifier",
+          "label": "Verifier",
+          "timestamp": "2026-08-14T08:58:57.363Z"
+        },
+        "cannotProve": [
+          "This bounded Verifier does not establish general user benefit, production safety, or lower Maintainer workload."
+        ],
+        "replayable": true,
+        "humanConfirmed": false,
+        "handling": "Reference-application evidence; eligible for public export only after the KPR privacy scan passes."
+      },
+      {
+        "id": "project-unsupported-conclusion",
+        "type": "verifier",
+        "title": "Unsupported conclusion guard",
+        "summary": "Every conclusion block must retain at least one linked evidence item.",
+        "supportsClaimIds": [
+          "claim-invariant-sources"
+        ],
+        "result": "pass",
+        "source": {
+          "id": "project-unsupported-conclusion-source",
+          "type": "verifier",
+          "label": "Verifier",
+          "timestamp": "2026-08-14T08:58:57.363Z"
+        },
+        "cannotProve": [
+          "This bounded Verifier does not establish general user benefit, production safety, or lower Maintainer workload."
+        ],
+        "replayable": true,
+        "humanConfirmed": false,
+        "handling": "Reference-application evidence; eligible for public export only after the KPR privacy scan passes.",
+        "details": {
+          "minimumEvidenceLinks": 1
+        }
+      }
+    ]
+  },
+  "proposals": {
+    "user-side": {
+      "role": "user-side",
+      "summary": "Propose a reversible, private local User Overlay for Research Brief that renders the conclusion before the evidence, keeps every source link visible and attached to its evidence, leaves the protected light theme unchanged, and remembers this as the user's local preference. No public default, protected theme, or core capability is modified.",
+      "plan": [
+        "Confirm project invariants and mutable surfaces from the manifest and policy: summary-layout and preference-memory are user-local and reversible; theme is protected; source preservation is a protected invariant.",
+        "Inspect the current workspace and the reference brief layout to establish the baseline before any change.",
+        "Draft a bounded local overlay: conclusionFirst=true, preserveSources=true, theme=light (unchanged), rememberPreference=true, scope=private.",
+        "Preview the workspace patch and run the required verifiers for a User Overlay (source-preservation, public-core-unchanged, reversible-overlay); do not treat the change as applied.",
+        "Submit the User Overlay proposal for contributor approval; any public adoption remains a Maintainer decision."
+      ],
+      "proposedOverlay": {
+        "conclusionFirst": true,
+        "preserveSources": true,
+        "theme": "light",
+        "rememberPreference": true,
+        "scope": "private"
+      },
+      "proposedClaims": [
+        {
+          "type": "problem",
+          "statement": "The reference summary layout presents evidence before the conclusion, which does not match this user's stated preference.",
+          "scope": [
+            "summary-layout"
+          ],
+          "confidence": "high"
+        },
+        {
+          "type": "intent",
+          "statement": "Render the conclusion first while keeping supporting evidence and source links visible.",
+          "scope": [
+            "summary-layout",
+            "render_brief"
+          ],
+          "confidence": "high"
+        },
+        {
+          "type": "expected_behavior",
+          "statement": "After the overlay, the brief shows the conclusion before the supporting evidence, and every source link remains visible and attached to its evidence.",
+          "scope": [
+            "summary-layout"
+          ],
+          "confidence": "high"
+        },
+        {
+          "type": "constraint",
+          "statement": "The theme is protected and stays at the reference default 'light'; the overlay must not alter the protected theme surface.",
+          "scope": [
+            "theme"
+          ],
+          "confidence": "high"
+        },
+        {
+          "type": "constraint",
+          "statement": "The overlay is private by default because the user did not explicitly request contribution; private preferences are not submitted automatically.",
+          "scope": [
+            "preference-memory"
+          ],
+          "confidence": "medium"
+        },
+        {
+          "type": "invariant",
+          "statement": "Source links remain visible and attached to evidence.",
+          "scope": [
+            "summary-layout",
+            "render_brief"
+          ],
+          "confidence": "high"
+        },
+        {
+          "type": "invariant",
+          "statement": "The public default does not change without Maintainer approval; this proposal changes only the local overlay.",
+          "scope": [
+            "public default"
+          ],
+          "confidence": "high"
+        },
+        {
+          "type": "acceptance_criterion",
+          "statement": "A reversible local overlay exists with conclusionFirst=true, preserveSources=true, theme=light, rememberPreference=true, verified by source-preservation, public-core-unchanged, and reversible-overlay before any claim of completion.",
+          "scope": [
+            "user_overlay"
+          ],
+          "confidence": "medium"
+        },
+        {
+          "type": "decision",
+          "statement": "Scope is 'private'; the preference is remembered locally and nothing is submitted to the public project.",
+          "scope": [
+            "preference-memory",
+            "user_overlay"
+          ],
+          "confidence": "high"
+        }
+      ],
+      "openQuestions": [
+        "Should this remembered preference later be proposed as a public default (which would require explicit opt-in and Maintainer approval), or remain strictly private?",
+        "Does 'remember this as my preference' apply only to future briefs rendered locally, or also to re-rendering previously saved briefs?"
+      ]
+    },
+    "maintainer-side": {
+      "role": "maintainer-side",
+      "summary": "Knowledge-first review draft for KPR kpr-5786219c (\"Optional conclusion-first research briefs\"). All 7 claims are human-attested; the problem claim was contributor-corrected to a scenario-scoped statement; the public-capability claim is an explicit open question for the Maintainer. Knowledge-gate verifier requirements (human-attestation, privacy-scan) are satisfied. I propose accepting the six scenario/constraint/intent/decision claims as drafted (none change the public default), and deferring claim-public-capability pending further overlay evidence. Two evidence gaps are flagged for Maintainer decision: indirect evidence for the problem claim, and no dedicated verifier for the explicit-confirmation-before-save preference gate. Nothing here is approved; all resolutions remain drafts for the Maintainer at the R2 gate.",
+      "plan": [
+        "Confirm KPR status and gates: accepted_for_synthesis, human attestation present (contributor corrected claim-problem), privacy scan passed — knowledge-gate verifier requirements (human-attestation, privacy-scan) are satisfied.",
+        "Map all 7 knowledge claims against policy: protected invariants, product-source-visible, product-default-stable, privacy rules, approval rules R1→R2→R3, and the render_brief / configure_summary_layout capability contracts.",
+        "Assess evidence sufficiency: 4 verifier results pass but are humanConfirmed:false and reference-scoped; note the indirect problem-claim evidence and the missing confirmation-before-save preference verifier.",
+        "Record impact analysis across product_behavior, interface, user_preference, permissions_privacy, data_provenance, verification, compatibility, and rollout_rollback dimensions.",
+        "Propose bounded claim resolutions for all 7 claims as drafts for Maintainer decision: accept for scenario-scoped/constraint/intent/decision claims; defer for the public-capability open question.",
+        "Surface Maintainer decisions: R2 resolution approval, confirmation-gate verifier question, experimental-status question, and downstream project-candidate gating (project-default-stability, project-scope-boundary, project-unsupported-conclusion, project-confirmation, project-source-preservation)."
+      ],
+      "impactAnalysis": [
+        {
+          "id": "impact-default-stability",
+          "dimension": "product_behavior",
+          "title": "Public default remains unchanged",
+          "description": "The contributor-attested expected behavior and the KPR nonGoals require conclusion-first to be an opt-in per-user choice; defaultBehavior.conclusionFirst stays false. No accepted claim proposes changing the public default. claim-public-capability is explicitly an open_question left to the Maintainer (R3).",
+          "source": "policy-required",
+          "confidence": "high",
+          "affectedScopes": [
+            "summary-layout",
+            "public-product",
+            "user-preference"
+          ],
+          "humanDecisionRequired": false,
+          "evidenceRequired": false
+        },
+        {
+          "id": "impact-interface-scope",
+          "dimension": "interface",
+          "title": "Change confined to the summary-layout surface",
+          "description": "The reversible overlay reorders sections within summary-layout (mutable, userLocal, reversible). The protected theme surface and reference core are untouched; evidence-public-core confirms layer isolation (user_overlay, referenceChecksum fnv1a-76b6d301).",
+          "source": "explicit",
+          "confidence": "high",
+          "affectedScopes": [
+            "summary-layout",
+            "theme"
+          ],
+          "humanDecisionRequired": false,
+          "evidenceRequired": false
+        },
+        {
+          "id": "impact-preference-privacy",
+          "dimension": "permissions_privacy",
+          "title": "Preference memory stays local and confirmation-gated",
+          "description": "claim-remember-preference touches preference-memory (userLocal, contributable, reversible). Policy: private preferences are never submitted automatically (privacy-private-overlay); savePreference defaults to false; the configure_summary_layout contract requires Contributor approval before writing and lists 'preference saved without confirmation' as a failure mode. Privacy scan passed with no findings.",
+          "source": "policy-required",
+          "confidence": "high",
+          "affectedScopes": [
+            "preference-memory",
+            "user-preference"
+          ],
+          "humanDecisionRequired": false,
+          "evidenceRequired": false
+        },
+        {
+          "id": "impact-evidence-provenance",
+          "dimension": "data_provenance",
+          "title": "Evidence is machine-generated, replayable, and reference-scoped",
+          "description": "All four verifier results pass but are humanConfirmed:false; each cannotProve note states it does not establish general user benefit, production safety, or lower Maintainer workload. claim-problem wording was corrected by the contributor, narrowing it to the Research Brief reference scenario. Evidence handling permits public export after the privacy scan, which has passed.",
+          "source": "explicit",
+          "confidence": "high",
+          "affectedScopes": [
+            "research-brief",
+            "summary-layout"
+          ],
+          "humanDecisionRequired": false,
+          "evidenceRequired": false
+        },
+        {
+          "id": "impact-verification-gates",
+          "dimension": "verification",
+          "title": "Knowledge gate satisfied; project-candidate gates remain outstanding",
+          "description": "human-attestation and privacy-scan are satisfied for the knowledge gate. Any future public capability derived from this KPR must pass the project-candidate verifier set (project-default-stability, project-source-preservation, project-scope-boundary, project-confirmation, project-unsupported-conclusion) plus R3 Maintainer adoption.",
+          "source": "policy-required",
+          "confidence": "high",
+          "affectedScopes": [
+            "public-product",
+            "contribution",
+            "research-brief"
+          ],
+          "humanDecisionRequired": true,
+          "evidenceRequired": true
+        },
+        {
+          "id": "impact-rollout-path",
+          "dimension": "rollout_rollback",
+          "title": "Local-first reversible rollout with R1→R2→R3 gates",
+          "description": "claim-local-first prescribes proving behavior in a reversible User Overlay before any public proposal. A rollback checkpoint (checkpoint-user-before-overlay) exists and evidence-reversible-overlay passes. Approval rules: R1 contributor overlay, R2 Maintainer integration contract, R3 Maintainer public adoption. Blind reconstruction keeps local code out of the project.",
+          "source": "explicit",
+          "confidence": "high",
+          "affectedScopes": [
+            "user-realization",
+            "contribution",
+            "public-product"
+          ],
+          "humanDecisionRequired": false,
+          "evidenceRequired": false
+        },
+        {
+          "id": "impact-confirmation-gate-gap",
+          "dimension": "verification",
+          "title": "Explicit-confirmation-before-save gate has no dedicated verifier",
+          "description": "Agent-inferred observation: claim-remember-preference requires the preference to be saved only after explicit confirmation, and the capability failure mode names 'preference saved without confirmation' — but no verifierId in the manifest specifically proves the confirmation-before-save flow. evidence-reversible-overlay demonstrates reversibility, not the confirmation gate. The Maintainer may wish to require a dedicated verifier or a manual confirmation step at implementation.",
+          "source": "agent-inferred",
+          "confidence": "medium",
+          "affectedScopes": [
+            "preference-memory",
+            "user-preference"
+          ],
+          "humanDecisionRequired": true,
+          "evidenceRequired": true
+        },
+        {
+          "id": "impact-problem-evidence-alignment",
+          "dimension": "data_provenance",
+          "title": "Problem claim rests on indirect evidence",
+          "description": "Agent-inferred observation: evidence-layout-order demonstrates the overlay renders the conclusion first (conclusionFirst: true), which supports claim-expected-order; it does not directly measure default-layout reader impact. The problem claim is safe because the contributor narrowed it to 'In this Research Brief scenario'. No additional evidence is strictly required for the scenario-scoped claim, but the contract should preserve that scoping.",
+          "source": "agent-inferred",
+          "confidence": "medium",
+          "affectedScopes": [
+            "research-brief",
+            "summary-layout"
+          ],
+          "humanDecisionRequired": false,
+          "evidenceRequired": false
+        },
+        {
+          "id": "impact-compat-boundary",
+          "dimension": "compatibility",
+          "title": "Non-Research-Brief applications are out of scope",
+          "description": "KPR nonGoals state no changes to non-Research-Brief applications; claim-problem and claim-expected-order are scoped to research-brief/summary-layout. A project-scope-boundary verification should enforce this boundary in any candidate derived from this KPR.",
+          "source": "explicit",
+          "confidence": "high",
+          "affectedScopes": [
+            "research-brief",
+            "summary-layout"
+          ],
+          "humanDecisionRequired": false,
+          "evidenceRequired": false
+        }
+      ],
+      "resolutionSuggestions": [
+        {
+          "claimId": "claim-problem",
+          "decision": "accept",
+          "finalStatement": "In this Research Brief scenario, the reference layout renders the decision-relevant conclusion after the supporting context; this is a scenario-scoped problem statement, not a general claim about all briefs.",
+          "rationale": "The contributor corrected the Agent extraction to narrow the wording to the Research Brief reference scenario (decision-contributor-correction-claim-problem), aligning it with defaultBehavior (conclusionFirst: false) and the attestation scope. Accepting preserves the correction; the scenario scoping should be carried into the Knowledge Integration Contract unchanged.",
+          "targetScopes": [
+            "research-brief",
+            "summary-layout"
+          ],
+          "rollout": "Carry the scenario-scoped statement verbatim into the Knowledge Integration Contract; do not generalize beyond the Research Brief reference scenario.",
+          "requiredVerifierIds": [
+            "human-attestation",
+            "project-scope-boundary"
+          ]
+        },
+        {
+          "claimId": "claim-expected-order",
+          "decision": "accept",
+          "finalStatement": "A reader can opt into a conclusion-first layout with supporting evidence immediately after it, delivered as a reversible per-user overlay that leaves the public default unchanged.",
+          "rationale": "Matches expectedBehavior[0] and acceptanceCriteria[0], and maps to the configure_summary_layout capability (conclusionFirst input, reversible overlay). evidence-layout-order passes. The claim describes an opt-in choice, not a default change.",
+          "targetScopes": [
+            "research-brief",
+            "summary-layout"
+          ],
+          "rollout": "Implement within the user overlay path only; any public-capability version requires a separate Maintainer decision at R2/R3.",
+          "requiredVerifierIds": [
+            "source-preservation",
+            "public-core-unchanged",
+            "reversible-overlay"
+          ]
+        },
+        {
+          "claimId": "claim-preserve-sources",
+          "decision": "accept",
+          "finalStatement": "Changing the layout must not remove evidence or source links; this is the overlay-level constraint mirroring the project's source-preservation invariant.",
+          "rationale": "evidence-source-preservation passes (3/3 sources attached); the statement is consistent with product-source-visible and protectedInvariants[0]. It adds a contributor-attested constraint at the overlay level without altering the public invariant.",
+          "targetScopes": [
+            "research-brief",
+            "sources"
+          ],
+          "rollout": "Keep as a hard acceptance criterion for both the overlay and any future public candidate.",
+          "requiredVerifierIds": [
+            "source-preservation",
+            "project-source-preservation"
+          ]
+        },
+        {
+          "claimId": "claim-remember-preference",
+          "decision": "accept",
+          "finalStatement": "The conclusion-first preference is remembered only after the user explicitly confirms it, stored in local preference memory, and never submitted automatically.",
+          "rationale": "Human-attested intent consistent with the configure_summary_layout failure mode ('preference saved without confirmation'), privacy-private-overlay, and savePreference: false default. evidence-reversible-overlay confirms the mechanism is reversible. Note: no verifier currently proves the confirmation-before-save flow; the Maintainer may require one (see open questions).",
+          "targetScopes": [
+            "user-preference",
+            "preference-memory"
+          ],
+          "rollout": "Bind to the existing R1 contributor-approval path; the privacy rules independently govern non-submission, so no claim edit is required.",
+          "requiredVerifierIds": [
+            "reversible-overlay",
+            "privacy-scan"
+          ]
+        },
+        {
+          "claimId": "claim-local-first",
+          "decision": "accept",
+          "finalStatement": "The behavior is proven in a reversible User Overlay before any public capability is proposed; local code is not adopted directly (blind reconstruction).",
+          "rationale": "evidence-public-core and evidence-reversible-overlay pass; the claim matches the decision record (decision-local-overlay), the R1→R2→R3 approval rules, and contribution-blind-reconstruction. It operationalizes the nonGoal 'do not adopt the contributor's local code directly'.",
+          "targetScopes": [
+            "user-realization",
+            "contribution"
+          ],
+          "rollout": "Follow the R2 Knowledge Integration Contract and, only if the Maintainer later accepts the capability question, the R3 public adoption path.",
+          "requiredVerifierIds": [
+            "public-core-unchanged",
+            "reversible-overlay",
+            "project-scope-boundary"
+          ]
+        },
+        {
+          "claimId": "claim-invariant-sources",
+          "decision": "accept",
+          "finalStatement": "Every conclusion remains linked to visible supporting evidence and sources; this reaffirms the project's existing protected invariant and introduces no new public change.",
+          "rationale": "Substantively identical to protectedInvariants[0] and product-source-visible. Treat as reaffirmation/confirmation knowledge rather than new capability knowledge; no separate action required.",
+          "targetScopes": [
+            "public-core",
+            "sources"
+          ],
+          "rollout": "Record as reaffirmation of the existing invariant; no separate action required.",
+          "requiredVerifierIds": [
+            "project-source-preservation",
+            "project-unsupported-conclusion"
+          ]
+        },
+        {
+          "claimId": "claim-public-capability",
+          "decision": "defer",
+          "finalStatement": "Whether the project offers conclusion-first summaries as an optional public capability remains an open Maintainer decision, deferred pending further evidence (for example, evaluation across more document types).",
+          "rationale": "The claim is typed open_question with medium confidence, the verifier cannotProve notes explicitly state no general user benefit is established, and the KPR's own open question asks whether the capability should remain experimental. Deferral respects product-default-stable and the Maintainer's R3 authority without rejecting the idea.",
+          "targetScopes": [
+            "public-product"
+          ],
+          "rollout": "Revisit after the local overlay accumulates usage evidence; any acceptance must pass the project-candidate verifier set and R3 Maintainer adoption.",
+          "requiredVerifierIds": [
+            "project-default-stability",
+            "project-scope-boundary",
+            "project-unsupported-conclusion",
+            "project-confirmation"
+          ]
+        }
+      ],
+      "openQuestions": [
+        "Should the explicit-confirmation-before-save preference gate require a dedicated verifier, or is the capability contract's failure mode plus reversible-overlay verification sufficient at R1?",
+        "Should claim-public-capability remain deferred until the overlay is evaluated on more document types (per the KPR's own open question)?",
+        "Is the scenario-scoped problem claim sufficient for synthesis, or does the Maintainer want direct evidence of default-layout reader impact before approving the Knowledge Integration Contract?",
+        "Should the Knowledge Integration Contract require project-scope-boundary verification that any implementation stays within research-brief/summary-layout and does not touch protected surfaces like theme?",
+        "Should the four verifier results be re-run or human-confirmed before public export, given all are marked humanConfirmed: false, even though the privacy scan has already passed?",
+        "Does the Maintainer want a documentation note that claim-invariant-sources is a reaffirmation rather than new knowledge, to avoid redundant contract obligations?"
+      ]
+    },
+    "project": {
+      "role": "project",
+      "summary": "Blind Reconstruction of the Maintainer-approved Integration Contract (kpr-5786219c-c2a8-4c0f-8e3c-4f5dd952ffed): propose conclusion-first summaries as an experimental, opt-in capability for Research Brief documents only. The public default is unchanged, source links remain visible and attached to evidence, and the layout preference is saved only after explicit user confirmation. The candidate is submitted for Maintainer final review only; it is not adopted, merged, or applied to public state by the Project Agent.",
+      "plan": [
+        "Read the Maintainer-approved Integration Contract (kpr-5786219c-c2a8-4c0f-8e3c-4f5dd952ffed) and extract only the accepted knowledge items; apply Blind Reconstruction so the contributor patch stays hidden and uninspected.",
+        "Derive the candidate scope from claim-public-capability and the implementationBoundary: conclusion-first summary, experimental rollout, opt-in setting, Research Brief documents only, and an unchanged public default.",
+        "Encode the protected invariants into the candidate: preserveSources=true (evidence and source links remain visible and attached) and saveOnlyAfterConfirmation=true (the conclusion-first preference is remembered only after explicit user confirmation, per claim-remember-preference).",
+        "Map the five required verifiers (project-default-stability, project-source-preservation, project-scope-boundary, project-confirmation, project-unsupported-conclusion) as the completion evidence required before this candidate may be considered verified.",
+        "Submit the bounded project candidate for Maintainer final review; the Project Agent performs no adoption, merge, or public-state change, leaving final public adoption to the Maintainer."
+      ],
+      "projectCandidate": {
+        "featureId": "conclusion-first-summary",
+        "label": "Conclusion-first summary (experimental, opt-in)",
+        "enabledByDefault": false,
+        "applicableDocumentTypes": [
+          "research-brief"
+        ],
+        "preserveSources": true,
+        "saveOnlyAfterConfirmation": true,
+        "rollout": "experimental"
+      },
+      "openQuestions": [
+        "The approved Contract does not specify the feature identifier string; the Project Agent proposed 'conclusion-first-summary' and the Maintainer may rename it during final review.",
+        "No other unresolved questions remain in the approved Contract; the remaining gate is the Maintainer's final review before any public adoption."
+      ]
+    }
+  },
+  "runs": [
+    {
+      "id": "run-live-de532359-9cdc-4b02-b308-4dbb750087aa",
+      "mode": "live",
+      "role": "user-side",
+      "skillId": "adapt_software_locally",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "startedAt": "2026-08-14T08:56:44.376Z",
+      "events": [
+        {
+          "id": "event-fabe8aac-b08d-4195-857c-3d69cec4a0f6",
+          "sequence": 1,
+          "timestamp": "2026-08-14T08:56:44.377Z",
+          "type": "run_started",
+          "plane": "action",
+          "title": "User-side Agent started",
+          "summary": "Live provider request initiated through the local gateway.",
+          "actor": {
+            "id": "agent-user-side",
+            "type": "agent",
+            "label": "User-side Agent",
+            "role": "user-side"
+          }
+        },
+        {
+          "id": "event-2c234784-3a18-41cd-9791-028ff1f20395",
+          "sequence": 2,
+          "timestamp": "2026-08-14T08:56:44.377Z",
+          "type": "context_assembled",
+          "plane": "context",
+          "title": "Authorized context and Skill assembled",
+          "summary": "Only role-scoped context is included; private trajectory and contributor patch are excluded.",
+          "actor": {
+            "id": "agent-user-side",
+            "type": "agent",
+            "label": "User-side Agent",
+            "role": "user-side"
+          },
+          "payload": {
+            "skillId": "adapt_software_locally",
+            "skillVersion": "0.1.0"
+          }
+        },
+        {
+          "id": "event-21473414-9da8-47eb-81e0-fc3bf00357b7",
+          "sequence": 3,
+          "timestamp": "2026-08-14T08:56:44.377Z",
+          "type": "policy_check",
+          "plane": "policy",
+          "title": "Role and authority checked",
+          "summary": "The request may produce a proposal but cannot mutate public state.",
+          "actor": {
+            "id": "agent-user-side",
+            "type": "agent",
+            "label": "User-side Agent",
+            "role": "user-side"
+          }
+        },
+        {
+          "id": "event-9939fd5e-6129-4ea6-9c50-b53fbb7cedc3",
+          "sequence": 4,
+          "timestamp": "2026-08-14T08:56:44.377Z",
+          "type": "policy_check",
+          "plane": "policy",
+          "title": "Tool risk and gate checked",
+          "summary": "The proposal may be prepared, but execution remains behind a human gate.",
+          "actor": {
+            "id": "agent-user-side",
+            "type": "agent",
+            "label": "User-side Agent",
+            "role": "user-side"
+          },
+          "payload": {
+            "tool": "submit_user_side_proposal",
+            "riskLevel": "R1",
+            "sideEffect": "local-proposal",
+            "requiresHumanApproval": true
+          }
+        },
+        {
+          "id": "event-d1833923-e33e-4226-ad08-dec050f055d9",
+          "sequence": 5,
+          "timestamp": "2026-08-14T08:56:44.393Z",
+          "type": "plan_proposed",
+          "plane": "action",
+          "title": "Structured proposal requested",
+          "summary": "The provider must call submit_user_side_proposal; free-form mutation is unavailable.",
+          "actor": {
+            "id": "agent-user-side",
+            "type": "agent",
+            "label": "User-side Agent",
+            "role": "user-side"
+          }
+        },
+        {
+          "id": "event-14013a88-7c72-47a0-b6f1-e5775a5eeab7",
+          "sequence": 6,
+          "timestamp": "2026-08-14T08:57:03.602Z",
+          "type": "assistant_message",
+          "plane": "action",
+          "title": "Reviewable Provider message",
+          "summary": "I'll analyze the request against the authorized context before proposing anything.\n\n**Assessment of the request:**\n\n1. **Conclusion first** → maps to `summary-layout` (userLocal, contributable, reversible) via `configure_summary_layout` — allowed.\n2. **Keep supporting evidence and sources visible** → aligns with the protected invariant \"Source links remain visible and attached to evidence\" and `preserveSources: true` (already the default).\n3. **Preserve the light and simple interface** → `theme`",
+          "actor": {
+            "id": "agent-user-side",
+            "type": "agent",
+            "label": "User-side Agent",
+            "role": "user-side"
+          },
+          "payload": {
+            "stopReason": "tool_calls"
+          }
+        },
+        {
+          "id": "event-86e97cd9-dc19-4977-9f15-3e0bdea3ba7d",
+          "sequence": 7,
+          "timestamp": "2026-08-14T08:57:03.602Z",
+          "type": "tool_call",
+          "plane": "action",
+          "title": "submit_user_side_proposal",
+          "summary": "Provider returned a structured proposal for validation.",
+          "actor": {
+            "id": "agent-user-side",
+            "type": "agent",
+            "label": "User-side Agent",
+            "role": "user-side"
+          }
+        },
+        {
+          "id": "event-f988cdae-7f09-437a-9f2f-6f55a10bc43b",
+          "sequence": 8,
+          "timestamp": "2026-08-14T08:57:03.603Z",
+          "type": "tool_result",
+          "plane": "action",
+          "title": "Proposal accepted into review state",
+          "summary": "The application accepted the structured proposal without applying or verifying it.",
+          "actor": {
+            "id": "agent-user-side",
+            "type": "agent",
+            "label": "User-side Agent",
+            "role": "user-side"
+          }
+        },
+        {
+          "id": "event-3b75b711-2ba1-48f1-91ac-ef0fe50733a5",
+          "sequence": 9,
+          "timestamp": "2026-08-14T08:57:03.603Z",
+          "type": "approval_requested",
+          "plane": "policy",
+          "title": "Human gate required",
+          "summary": "Contributor approval is required.",
+          "actor": {
+            "id": "agent-user-side",
+            "type": "agent",
+            "label": "User-side Agent",
+            "role": "user-side"
+          }
+        },
+        {
+          "id": "event-4db6b5b9-4df3-411c-a384-e2efb58bf08f",
+          "sequence": 10,
+          "timestamp": "2026-08-14T08:57:03.603Z",
+          "type": "usage",
+          "plane": "proof",
+          "title": "Provider usage recorded",
+          "summary": "Token totals and stop reason are retained; hidden reasoning is not stored.",
+          "actor": {
+            "id": "agent-user-side",
+            "type": "agent",
+            "label": "User-side Agent",
+            "role": "user-side"
+          },
+          "payload": {
+            "inputTokens": 3820,
+            "outputTokens": 2379,
+            "stopReason": "tool_calls"
+          }
+        },
+        {
+          "id": "event-b8981503-d939-4f8b-8e9b-d0519d162f64",
+          "sequence": 11,
+          "timestamp": "2026-08-14T08:57:03.603Z",
+          "type": "run_completed",
+          "plane": "memory",
+          "title": "Run completed at proposal boundary",
+          "summary": "The proposal is inspectable and no public action occurred.",
+          "actor": {
+            "id": "agent-user-side",
+            "type": "agent",
+            "label": "User-side Agent",
+            "role": "user-side"
+          }
+        }
+      ],
+      "budget": {
+        "maxProviderCalls": 1,
+        "providerCallsUsed": 1,
+        "maxToolCalls": 6,
+        "toolCallsUsed": 1,
+        "maxDurationMs": 0,
+        "maxInputTokens": 20000,
+        "maxOutputTokens": 16000,
+        "maxRetries": 0,
+        "retriesUsed": 0
+      },
+      "completedAt": "2026-08-14T08:57:03.603Z",
+      "terminationReason": "Structured proposal produced; awaiting the appropriate human gate.",
+      "usage": {
+        "inputTokens": 3820,
+        "outputTokens": 2379
+      }
+    },
+    {
+      "id": "run-live-58e5528e-f7c9-4099-bec1-4c4cdbb26c0d",
+      "mode": "live",
+      "role": "maintainer-side",
+      "skillId": "understand_kpr",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "startedAt": "2026-08-14T08:57:03.615Z",
+      "events": [
+        {
+          "id": "event-e7a2da2f-c78e-4fdf-9408-67daf1f7901f",
+          "sequence": 1,
+          "timestamp": "2026-08-14T08:57:03.615Z",
+          "type": "run_started",
+          "plane": "action",
+          "title": "Maintainer-side Agent started",
+          "summary": "Live provider request initiated through the local gateway.",
+          "actor": {
+            "id": "agent-maintainer-side",
+            "type": "agent",
+            "label": "Maintainer-side Agent",
+            "role": "maintainer-side"
+          }
+        },
+        {
+          "id": "event-d83a96f4-f320-41a8-a24b-130348b2e48f",
+          "sequence": 2,
+          "timestamp": "2026-08-14T08:57:03.615Z",
+          "type": "context_assembled",
+          "plane": "context",
+          "title": "Authorized context and Skill assembled",
+          "summary": "Only role-scoped context is included; private trajectory and contributor patch are excluded.",
+          "actor": {
+            "id": "agent-maintainer-side",
+            "type": "agent",
+            "label": "Maintainer-side Agent",
+            "role": "maintainer-side"
+          },
+          "payload": {
+            "skillId": "understand_kpr",
+            "skillVersion": "0.1.0"
+          }
+        },
+        {
+          "id": "event-6653bb61-72fa-4ba2-8092-df8b346ae2f0",
+          "sequence": 3,
+          "timestamp": "2026-08-14T08:57:03.615Z",
+          "type": "policy_check",
+          "plane": "policy",
+          "title": "Role and authority checked",
+          "summary": "The request may produce a proposal but cannot mutate public state.",
+          "actor": {
+            "id": "agent-maintainer-side",
+            "type": "agent",
+            "label": "Maintainer-side Agent",
+            "role": "maintainer-side"
+          }
+        },
+        {
+          "id": "event-686773b6-d812-4f61-b610-813737d78af2",
+          "sequence": 4,
+          "timestamp": "2026-08-14T08:57:03.615Z",
+          "type": "policy_check",
+          "plane": "policy",
+          "title": "Tool risk and gate checked",
+          "summary": "Role, risk, and human-gate policy passed.",
+          "actor": {
+            "id": "agent-maintainer-side",
+            "type": "agent",
+            "label": "Maintainer-side Agent",
+            "role": "maintainer-side"
+          },
+          "payload": {
+            "tool": "submit_maintainer_review",
+            "riskLevel": "R0",
+            "sideEffect": "none",
+            "requiresHumanApproval": false
+          }
+        },
+        {
+          "id": "event-c812ef0e-7735-47dd-87a0-51046761a7c9",
+          "sequence": 5,
+          "timestamp": "2026-08-14T08:57:03.621Z",
+          "type": "plan_proposed",
+          "plane": "action",
+          "title": "Structured proposal requested",
+          "summary": "The provider must call submit_maintainer_review; free-form mutation is unavailable.",
+          "actor": {
+            "id": "agent-maintainer-side",
+            "type": "agent",
+            "label": "Maintainer-side Agent",
+            "role": "maintainer-side"
+          }
+        },
+        {
+          "id": "event-f2be2fc4-3f0f-4336-a525-e411ec3680d5",
+          "sequence": 6,
+          "timestamp": "2026-08-14T08:58:40.369Z",
+          "type": "assistant_message",
+          "plane": "action",
+          "title": "Reviewable Provider message",
+          "summary": "I'll analyze this human-attested KPR from the Maintainer's knowledge-first perspective, then submit a bounded review draft. Let me first work through the knowledge structure, then propose the structured review.\n\n**Analysis summary (before submission):**\n\n- **7 knowledge claims**, all `human_attested`, all created by the user-side Agent. `claim-problem` was explicitly corrected by the contributor (narrowed to \"In this Research Brief scenario\"). `claim-public-capability` is typed `open_question` w",
+          "actor": {
+            "id": "agent-maintainer-side",
+            "type": "agent",
+            "label": "Maintainer-side Agent",
+            "role": "maintainer-side"
+          },
+          "payload": {
+            "stopReason": "tool_calls"
+          }
+        },
+        {
+          "id": "event-e46b816f-6f92-4e4e-afd8-4ee364e7b280",
+          "sequence": 7,
+          "timestamp": "2026-08-14T08:58:40.369Z",
+          "type": "tool_call",
+          "plane": "action",
+          "title": "submit_maintainer_review",
+          "summary": "Provider returned a structured proposal for validation.",
+          "actor": {
+            "id": "agent-maintainer-side",
+            "type": "agent",
+            "label": "Maintainer-side Agent",
+            "role": "maintainer-side"
+          }
+        },
+        {
+          "id": "event-21b80d53-bf48-47c5-a37d-1522f9a02ccd",
+          "sequence": 8,
+          "timestamp": "2026-08-14T08:58:40.371Z",
+          "type": "tool_result",
+          "plane": "action",
+          "title": "Proposal accepted into review state",
+          "summary": "The application accepted the structured proposal without applying or verifying it.",
+          "actor": {
+            "id": "agent-maintainer-side",
+            "type": "agent",
+            "label": "Maintainer-side Agent",
+            "role": "maintainer-side"
+          }
+        },
+        {
+          "id": "event-a084b98c-37f3-4c3d-aa60-7a8b3847646a",
+          "sequence": 9,
+          "timestamp": "2026-08-14T08:58:40.371Z",
+          "type": "approval_requested",
+          "plane": "policy",
+          "title": "Human gate required",
+          "summary": "Maintainer approval is required.",
+          "actor": {
+            "id": "agent-maintainer-side",
+            "type": "agent",
+            "label": "Maintainer-side Agent",
+            "role": "maintainer-side"
+          }
+        },
+        {
+          "id": "event-d4c2df20-6240-479b-885e-9fa34246315e",
+          "sequence": 10,
+          "timestamp": "2026-08-14T08:58:40.371Z",
+          "type": "usage",
+          "plane": "proof",
+          "title": "Provider usage recorded",
+          "summary": "Token totals and stop reason are retained; hidden reasoning is not stored.",
+          "actor": {
+            "id": "agent-maintainer-side",
+            "type": "agent",
+            "label": "Maintainer-side Agent",
+            "role": "maintainer-side"
+          },
+          "payload": {
+            "inputTokens": 9248,
+            "outputTokens": 12120,
+            "stopReason": "tool_calls"
+          }
+        },
+        {
+          "id": "event-48e4c6b6-b68e-4a5b-9f13-8f9a62c16110",
+          "sequence": 11,
+          "timestamp": "2026-08-14T08:58:40.371Z",
+          "type": "run_completed",
+          "plane": "memory",
+          "title": "Run completed at proposal boundary",
+          "summary": "The proposal is inspectable and no public action occurred.",
+          "actor": {
+            "id": "agent-maintainer-side",
+            "type": "agent",
+            "label": "Maintainer-side Agent",
+            "role": "maintainer-side"
+          }
+        }
+      ],
+      "budget": {
+        "maxProviderCalls": 1,
+        "providerCallsUsed": 1,
+        "maxToolCalls": 6,
+        "toolCallsUsed": 1,
+        "maxDurationMs": 0,
+        "maxInputTokens": 20000,
+        "maxOutputTokens": 32000,
+        "maxRetries": 0,
+        "retriesUsed": 0
+      },
+      "completedAt": "2026-08-14T08:58:40.371Z",
+      "terminationReason": "Structured proposal produced; awaiting the appropriate human gate.",
+      "usage": {
+        "inputTokens": 9248,
+        "outputTokens": 12120
+      }
+    },
+    {
+      "id": "run-live-140e055c-ae6c-47e6-a2e3-495d52897953",
+      "mode": "live",
+      "role": "project",
+      "skillId": "implement_from_contract",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "status": "completed",
+      "startedAt": "2026-08-14T08:58:40.371Z",
+      "events": [
+        {
+          "id": "event-9f2f090b-18d4-4e15-b135-6af3c6388f28",
+          "sequence": 1,
+          "timestamp": "2026-08-14T08:58:40.371Z",
+          "type": "run_started",
+          "plane": "action",
+          "title": "Project Agent started",
+          "summary": "Live provider request initiated through the local gateway.",
+          "actor": {
+            "id": "agent-project",
+            "type": "agent",
+            "label": "Project Agent",
+            "role": "project"
+          }
+        },
+        {
+          "id": "event-82088fff-40e9-4773-b730-b5da5da8f4e5",
+          "sequence": 2,
+          "timestamp": "2026-08-14T08:58:40.371Z",
+          "type": "context_assembled",
+          "plane": "context",
+          "title": "Authorized context and Skill assembled",
+          "summary": "Only role-scoped context is included; private trajectory and contributor patch are excluded.",
+          "actor": {
+            "id": "agent-project",
+            "type": "agent",
+            "label": "Project Agent",
+            "role": "project"
+          },
+          "payload": {
+            "skillId": "implement_from_contract",
+            "skillVersion": "0.1.0"
+          }
+        },
+        {
+          "id": "event-a4ba2feb-1fcb-4969-a326-781805770771",
+          "sequence": 3,
+          "timestamp": "2026-08-14T08:58:40.371Z",
+          "type": "policy_check",
+          "plane": "policy",
+          "title": "Role and authority checked",
+          "summary": "The request may produce a proposal but cannot mutate public state.",
+          "actor": {
+            "id": "agent-project",
+            "type": "agent",
+            "label": "Project Agent",
+            "role": "project"
+          }
+        },
+        {
+          "id": "event-d3d25f8e-3624-438e-a887-6dbf0d1db703",
+          "sequence": 4,
+          "timestamp": "2026-08-14T08:58:40.371Z",
+          "type": "policy_check",
+          "plane": "policy",
+          "title": "Tool risk and gate checked",
+          "summary": "Role, risk, and human-gate policy passed.",
+          "actor": {
+            "id": "agent-project",
+            "type": "agent",
+            "label": "Project Agent",
+            "role": "project"
+          },
+          "payload": {
+            "tool": "submit_project_candidate",
+            "riskLevel": "R2",
+            "sideEffect": "project-proposal",
+            "requiresHumanApproval": false
+          }
+        },
+        {
+          "id": "event-16b3f283-5732-4f66-a951-aa0c561cfb10",
+          "sequence": 5,
+          "timestamp": "2026-08-14T08:58:40.375Z",
+          "type": "plan_proposed",
+          "plane": "action",
+          "title": "Structured proposal requested",
+          "summary": "The provider must call submit_project_candidate; free-form mutation is unavailable.",
+          "actor": {
+            "id": "agent-project",
+            "type": "agent",
+            "label": "Project Agent",
+            "role": "project"
+          }
+        },
+        {
+          "id": "event-842f9abf-43f2-4fef-8a5c-88165cf7df5f",
+          "sequence": 6,
+          "timestamp": "2026-08-14T08:58:57.362Z",
+          "type": "tool_call",
+          "plane": "action",
+          "title": "submit_project_candidate",
+          "summary": "Provider returned a structured proposal for validation.",
+          "actor": {
+            "id": "agent-project",
+            "type": "agent",
+            "label": "Project Agent",
+            "role": "project"
+          }
+        },
+        {
+          "id": "event-fd187c9c-70b9-4938-ae59-365d40d5a520",
+          "sequence": 7,
+          "timestamp": "2026-08-14T08:58:57.363Z",
+          "type": "tool_result",
+          "plane": "action",
+          "title": "Proposal accepted into review state",
+          "summary": "The application accepted the structured proposal without applying or verifying it.",
+          "actor": {
+            "id": "agent-project",
+            "type": "agent",
+            "label": "Project Agent",
+            "role": "project"
+          }
+        },
+        {
+          "id": "event-3a5f0518-4ae2-41fa-9128-20fb0455e9f5",
+          "sequence": 8,
+          "timestamp": "2026-08-14T08:58:57.363Z",
+          "type": "approval_requested",
+          "plane": "policy",
+          "title": "Human gate required",
+          "summary": "Maintainer approval is required.",
+          "actor": {
+            "id": "agent-project",
+            "type": "agent",
+            "label": "Project Agent",
+            "role": "project"
+          }
+        },
+        {
+          "id": "event-cc94e31b-5856-4ba9-ab80-1aabd1a5ea54",
+          "sequence": 9,
+          "timestamp": "2026-08-14T08:58:57.363Z",
+          "type": "usage",
+          "plane": "proof",
+          "title": "Provider usage recorded",
+          "summary": "Token totals and stop reason are retained; hidden reasoning is not stored.",
+          "actor": {
+            "id": "agent-project",
+            "type": "agent",
+            "label": "Project Agent",
+            "role": "project"
+          },
+          "payload": {
+            "inputTokens": 4415,
+            "outputTokens": 2245,
+            "stopReason": "tool_calls"
+          }
+        },
+        {
+          "id": "event-da8a4570-5421-4af3-a77b-02e57fbd09c4",
+          "sequence": 10,
+          "timestamp": "2026-08-14T08:58:57.363Z",
+          "type": "run_completed",
+          "plane": "memory",
+          "title": "Run completed at proposal boundary",
+          "summary": "The proposal is inspectable and no public action occurred.",
+          "actor": {
+            "id": "agent-project",
+            "type": "agent",
+            "label": "Project Agent",
+            "role": "project"
+          }
+        }
+      ],
+      "budget": {
+        "maxProviderCalls": 1,
+        "providerCallsUsed": 1,
+        "maxToolCalls": 6,
+        "toolCallsUsed": 1,
+        "maxDurationMs": 0,
+        "maxInputTokens": 20000,
+        "maxOutputTokens": 16000,
+        "maxRetries": 0,
+        "retriesUsed": 0
+      },
+      "completedAt": "2026-08-14T08:58:57.363Z",
+      "terminationReason": "Structured proposal produced; awaiting the appropriate human gate.",
+      "usage": {
+        "inputTokens": 4415,
+        "outputTokens": 2245
+      }
+    }
+  ],
+  "notifications": [],
+  "showRuntime": true,
+  "proposedOverlay": {
+    "conclusionFirst": true,
+    "preserveSources": true,
+    "theme": "light",
+    "rememberPreference": true,
+    "scope": "private"
+  },
+  "activeOverlay": {
+    "conclusionFirst": true,
+    "preserveSources": true,
+    "theme": "light",
+    "rememberPreference": true,
+    "scope": "private"
+  },
+  "kpr": {
+    "schemaVersion": "0.1.0",
+    "id": "kpr-5786219c-c2a8-4c0f-8e3c-4f5dd952ffed",
+    "title": "Optional conclusion-first research briefs",
+    "status": "verification_passed",
+    "problem": "Research Brief readers may need the conclusion before the supporting context.",
+    "scope": [
+      "research-brief",
+      "summary-layout",
+      "user-preference"
+    ],
+    "expectedBehavior": [
+      "Users can opt into a conclusion-first layout.",
+      "Evidence and source links remain visible.",
+      "The preference is saved only after explicit confirmation."
+    ],
+    "acceptanceCriteria": [
+      "Conclusion renders before evidence when the option is enabled.",
+      "All source links remain attached.",
+      "The existing public default remains unchanged.",
+      "Removing the option restores reference behavior."
+    ],
+    "nonGoals": [
+      "Do not make conclusion-first the public default.",
+      "Do not change non-Research-Brief applications.",
+      "Do not adopt the contributor's local code directly."
+    ],
+    "protectedInvariants": [
+      "Source links remain visible and attached to evidence.",
+      "The public default does not change without Maintainer approval.",
+      "Private preferences are not submitted automatically.",
+      "Project Agent completion requires verifier evidence.",
+      "Final public adoption belongs to the Maintainer."
+    ],
+    "knowledgeClaims": [
+      {
+        "createdBy": {
+          "id": "agent-user-side",
+          "type": "agent",
+          "label": "User-side Agent",
+          "role": "user-side"
+        },
+        "derivedFrom": [
+          {
+            "id": "source-user-request",
+            "type": "human_statement",
+            "label": "Contributor request",
+            "timestamp": "2026-08-14T08:57:03.614Z"
+          },
+          {
+            "id": "source-agent-extraction",
+            "type": "agent_extraction",
+            "label": "User-side Agent extraction",
+            "timestamp": "2026-08-14T08:57:03.614Z"
+          },
+          {
+            "id": "source-local-workspace",
+            "type": "workspace",
+            "label": "Verified local overlay",
+            "timestamp": "2026-08-14T08:57:03.614Z"
+          },
+          {
+            "id": "source-contributor-correction-claim-problem",
+            "type": "decision",
+            "label": "Contributor correction of Agent extraction",
+            "timestamp": "2026-08-14T08:57:03.614Z"
+          }
+        ],
+        "agentGenerated": true,
+        "confidence": "high",
+        "status": "human_attested",
+        "conflictsWith": [],
+        "supersedes": [],
+        "limitations": [
+          "Verified in the Research Brief reference scenario only."
+        ],
+        "id": "claim-problem",
+        "type": "problem",
+        "statement": "In this Research Brief scenario, the current layout delays the decision-relevant conclusion until after the supporting context.",
+        "scope": [
+          "research-brief",
+          "summary-layout"
+        ],
+        "evidenceRefs": [
+          "evidence-layout-order"
+        ],
+        "humanAttestation": {
+          "actor": {
+            "id": "human-contributor",
+            "type": "human",
+            "label": "You / Contributor",
+            "role": "contributor"
+          },
+          "statement": "I confirm that these claims accurately represent my request and local verification. I reviewed the submission scope and excluded private information.",
+          "attestedAt": "2026-08-14T08:57:03.614Z",
+          "scope": [
+            "problem",
+            "expected_behavior",
+            "constraints",
+            "local_evidence"
+          ]
+        }
+      },
+      {
+        "createdBy": {
+          "id": "agent-user-side",
+          "type": "agent",
+          "label": "User-side Agent",
+          "role": "user-side"
+        },
+        "derivedFrom": [
+          {
+            "id": "source-user-request",
+            "type": "human_statement",
+            "label": "Contributor request",
+            "timestamp": "2026-08-14T08:57:03.614Z"
+          },
+          {
+            "id": "source-agent-extraction",
+            "type": "agent_extraction",
+            "label": "User-side Agent extraction",
+            "timestamp": "2026-08-14T08:57:03.614Z"
+          },
+          {
+            "id": "source-local-workspace",
+            "type": "workspace",
+            "label": "Verified local overlay",
+            "timestamp": "2026-08-14T08:57:03.614Z"
+          }
+        ],
+        "agentGenerated": true,
+        "confidence": "high",
+        "status": "human_attested",
+        "conflictsWith": [],
+        "supersedes": [],
+        "limitations": [
+          "Verified in the Research Brief reference scenario only."
+        ],
+        "id": "claim-expected-order",
+        "type": "expected_behavior",
+        "statement": "A reader can choose a conclusion-first layout with supporting evidence immediately after it.",
+        "scope": [
+          "research-brief",
+          "summary-layout"
+        ],
+        "evidenceRefs": [
+          "evidence-layout-order"
+        ],
+        "humanAttestation": {
+          "actor": {
+            "id": "human-contributor",
+            "type": "human",
+            "label": "You / Contributor",
+            "role": "contributor"
+          },
+          "statement": "I confirm that these claims accurately represent my request and local verification. I reviewed the submission scope and excluded private information.",
+          "attestedAt": "2026-08-14T08:57:03.614Z",
+          "scope": [
+            "problem",
+            "expected_behavior",
+            "constraints",
+            "local_evidence"
+          ]
+        }
+      },
+      {
+        "createdBy": {
+          "id": "agent-user-side",
+          "type": "agent",
+          "label": "User-side Agent",
+          "role": "user-side"
+        },
+        "derivedFrom": [
+          {
+            "id": "source-user-request",
+            "type": "human_statement",
+            "label": "Contributor request",
+            "timestamp": "2026-08-14T08:57:03.614Z"
+          },
+          {
+            "id": "source-agent-extraction",
+            "type": "agent_extraction",
+            "label": "User-side Agent extraction",
+            "timestamp": "2026-08-14T08:57:03.614Z"
+          },
+          {
+            "id": "source-local-workspace",
+            "type": "workspace",
+            "label": "Verified local overlay",
+            "timestamp": "2026-08-14T08:57:03.614Z"
+          }
+        ],
+        "agentGenerated": true,
+        "confidence": "high",
+        "status": "human_attested",
+        "conflictsWith": [],
+        "supersedes": [],
+        "limitations": [
+          "Verified in the Research Brief reference scenario only."
+        ],
+        "id": "claim-preserve-sources",
+        "type": "constraint",
+        "statement": "Changing the layout must not remove evidence or source links.",
+        "scope": [
+          "research-brief",
+          "sources"
+        ],
+        "evidenceRefs": [
+          "evidence-source-preservation"
+        ],
+        "humanAttestation": {
+          "actor": {
+            "id": "human-contributor",
+            "type": "human",
+            "label": "You / Contributor",
+            "role": "contributor"
+          },
+          "statement": "I confirm that these claims accurately represent my request and local verification. I reviewed the submission scope and excluded private information.",
+          "attestedAt": "2026-08-14T08:57:03.614Z",
+          "scope": [
+            "problem",
+            "expected_behavior",
+            "constraints",
+            "local_evidence"
+          ]
+        }
+      },
+      {
+        "createdBy": {
+          "id": "agent-user-side",
+          "type": "agent",
+          "label": "User-side Agent",
+          "role": "user-side"
+        },
+        "derivedFrom": [
+          {
+            "id": "source-user-request",
+            "type": "human_statement",
+            "label": "Contributor request",
+            "timestamp": "2026-08-14T08:57:03.614Z"
+          },
+          {
+            "id": "source-agent-extraction",
+            "type": "agent_extraction",
+            "label": "User-side Agent extraction",
+            "timestamp": "2026-08-14T08:57:03.614Z"
+          },
+          {
+            "id": "source-local-workspace",
+            "type": "workspace",
+            "label": "Verified local overlay",
+            "timestamp": "2026-08-14T08:57:03.614Z"
+          }
+        ],
+        "agentGenerated": true,
+        "confidence": "high",
+        "status": "human_attested",
+        "conflictsWith": [],
+        "supersedes": [],
+        "limitations": [
+          "Verified in the Research Brief reference scenario only."
+        ],
+        "id": "claim-remember-preference",
+        "type": "intent",
+        "statement": "Remember the conclusion-first layout after the user explicitly confirms it.",
+        "scope": [
+          "user-preference"
+        ],
+        "evidenceRefs": [
+          "evidence-reversible-overlay"
+        ],
+        "humanAttestation": {
+          "actor": {
+            "id": "human-contributor",
+            "type": "human",
+            "label": "You / Contributor",
+            "role": "contributor"
+          },
+          "statement": "I confirm that these claims accurately represent my request and local verification. I reviewed the submission scope and excluded private information.",
+          "attestedAt": "2026-08-14T08:57:03.614Z",
+          "scope": [
+            "problem",
+            "expected_behavior",
+            "constraints",
+            "local_evidence"
+          ]
+        }
+      },
+      {
+        "createdBy": {
+          "id": "agent-user-side",
+          "type": "agent",
+          "label": "User-side Agent",
+          "role": "user-side"
+        },
+        "derivedFrom": [
+          {
+            "id": "source-user-request",
+            "type": "human_statement",
+            "label": "Contributor request",
+            "timestamp": "2026-08-14T08:57:03.614Z"
+          },
+          {
+            "id": "source-agent-extraction",
+            "type": "agent_extraction",
+            "label": "User-side Agent extraction",
+            "timestamp": "2026-08-14T08:57:03.614Z"
+          },
+          {
+            "id": "source-local-workspace",
+            "type": "workspace",
+            "label": "Verified local overlay",
+            "timestamp": "2026-08-14T08:57:03.614Z"
+          }
+        ],
+        "agentGenerated": true,
+        "confidence": "high",
+        "status": "human_attested",
+        "conflictsWith": [],
+        "supersedes": [],
+        "limitations": [
+          "Verified in the Research Brief reference scenario only."
+        ],
+        "id": "claim-local-first",
+        "type": "decision",
+        "statement": "Prove the behavior in a reversible User Overlay before proposing a public capability.",
+        "scope": [
+          "user-realization",
+          "contribution"
+        ],
+        "evidenceRefs": [
+          "evidence-public-core",
+          "evidence-reversible-overlay"
+        ],
+        "humanAttestation": {
+          "actor": {
+            "id": "human-contributor",
+            "type": "human",
+            "label": "You / Contributor",
+            "role": "contributor"
+          },
+          "statement": "I confirm that these claims accurately represent my request and local verification. I reviewed the submission scope and excluded private information.",
+          "attestedAt": "2026-08-14T08:57:03.614Z",
+          "scope": [
+            "problem",
+            "expected_behavior",
+            "constraints",
+            "local_evidence"
+          ]
+        }
+      },
+      {
+        "createdBy": {
+          "id": "agent-user-side",
+          "type": "agent",
+          "label": "User-side Agent",
+          "role": "user-side"
+        },
+        "derivedFrom": [
+          {
+            "id": "source-user-request",
+            "type": "human_statement",
+            "label": "Contributor request",
+            "timestamp": "2026-08-14T08:57:03.614Z"
+          },
+          {
+            "id": "source-agent-extraction",
+            "type": "agent_extraction",
+            "label": "User-side Agent extraction",
+            "timestamp": "2026-08-14T08:57:03.614Z"
+          },
+          {
+            "id": "source-local-workspace",
+            "type": "workspace",
+            "label": "Verified local overlay",
+            "timestamp": "2026-08-14T08:57:03.614Z"
+          }
+        ],
+        "agentGenerated": true,
+        "confidence": "high",
+        "status": "human_attested",
+        "conflictsWith": [],
+        "supersedes": [],
+        "limitations": [
+          "Verified in the Research Brief reference scenario only."
+        ],
+        "id": "claim-invariant-sources",
+        "type": "invariant",
+        "statement": "Every conclusion remains linked to visible supporting evidence and sources.",
+        "scope": [
+          "public-core",
+          "sources"
+        ],
+        "evidenceRefs": [
+          "evidence-source-preservation"
+        ],
+        "humanAttestation": {
+          "actor": {
+            "id": "human-contributor",
+            "type": "human",
+            "label": "You / Contributor",
+            "role": "contributor"
+          },
+          "statement": "I confirm that these claims accurately represent my request and local verification. I reviewed the submission scope and excluded private information.",
+          "attestedAt": "2026-08-14T08:57:03.614Z",
+          "scope": [
+            "problem",
+            "expected_behavior",
+            "constraints",
+            "local_evidence"
+          ]
+        }
+      },
+      {
+        "createdBy": {
+          "id": "agent-user-side",
+          "type": "agent",
+          "label": "User-side Agent",
+          "role": "user-side"
+        },
+        "derivedFrom": [
+          {
+            "id": "source-user-request",
+            "type": "human_statement",
+            "label": "Contributor request",
+            "timestamp": "2026-08-14T08:57:03.614Z"
+          },
+          {
+            "id": "source-agent-extraction",
+            "type": "agent_extraction",
+            "label": "User-side Agent extraction",
+            "timestamp": "2026-08-14T08:57:03.614Z"
+          },
+          {
+            "id": "source-local-workspace",
+            "type": "workspace",
+            "label": "Verified local overlay",
+            "timestamp": "2026-08-14T08:57:03.614Z"
+          }
+        ],
+        "agentGenerated": true,
+        "confidence": "medium",
+        "status": "human_attested",
+        "conflictsWith": [],
+        "supersedes": [],
+        "limitations": [
+          "Verified in the Research Brief reference scenario only."
+        ],
+        "id": "claim-public-capability",
+        "type": "open_question",
+        "statement": "Should the project offer conclusion-first summaries as an optional public capability?",
+        "scope": [
+          "public-product"
+        ],
+        "evidenceRefs": [
+          "evidence-layout-order",
+          "evidence-source-preservation"
+        ],
+        "humanAttestation": {
+          "actor": {
+            "id": "human-contributor",
+            "type": "human",
+            "label": "You / Contributor",
+            "role": "contributor"
+          },
+          "statement": "I confirm that these claims accurately represent my request and local verification. I reviewed the submission scope and excluded private information.",
+          "attestedAt": "2026-08-14T08:57:03.614Z",
+          "scope": [
+            "problem",
+            "expected_behavior",
+            "constraints",
+            "local_evidence"
+          ]
+        }
+      }
+    ],
+    "evidence": [
+      {
+        "id": "evidence-layout-order",
+        "type": "verifier",
+        "title": "Conclusion appears before evidence",
+        "summary": "Rendered section order begins with the conclusion and keeps evidence after it.",
+        "supportsClaimIds": [
+          "claim-problem",
+          "claim-expected-order",
+          "claim-public-capability"
+        ],
+        "result": "pass",
+        "source": {
+          "id": "evidence-layout-order-source",
+          "type": "verifier",
+          "label": "Verifier",
+          "timestamp": "2026-08-14T08:57:03.604Z"
+        },
+        "cannotProve": [
+          "This bounded Verifier does not establish general user benefit, production safety, or lower Maintainer workload."
+        ],
+        "replayable": true,
+        "humanConfirmed": false,
+        "handling": "Reference-application evidence; eligible for public export only after the KPR privacy scan passes.",
+        "details": {
+          "conclusionFirst": true
+        }
+      },
+      {
+        "id": "evidence-source-preservation",
+        "type": "verifier",
+        "title": "Sources are preserved",
+        "summary": "All 3 reference sources remain attached.",
+        "supportsClaimIds": [
+          "claim-preserve-sources",
+          "claim-invariant-sources",
+          "claim-public-capability"
+        ],
+        "result": "pass",
+        "source": {
+          "id": "evidence-source-preservation-source",
+          "type": "verifier",
+          "label": "Verifier",
+          "timestamp": "2026-08-14T08:57:03.604Z"
+        },
+        "cannotProve": [
+          "This bounded Verifier does not establish general user benefit, production safety, or lower Maintainer workload."
+        ],
+        "replayable": true,
+        "humanConfirmed": false,
+        "handling": "Reference-application evidence; eligible for public export only after the KPR privacy scan passes.",
+        "details": {
+          "sourceCount": 3,
+          "expectedSourceCount": 3
+        }
+      },
+      {
+        "id": "evidence-public-core",
+        "type": "verifier",
+        "title": "Public core remains unchanged",
+        "summary": "The proposed change is isolated to the User Realization layer.",
+        "supportsClaimIds": [
+          "claim-local-first"
+        ],
+        "result": "pass",
+        "source": {
+          "id": "evidence-public-core-source",
+          "type": "verifier",
+          "label": "Verifier",
+          "timestamp": "2026-08-14T08:57:03.614Z"
+        },
+        "cannotProve": [
+          "This bounded Verifier does not establish general user benefit, production safety, or lower Maintainer workload."
+        ],
+        "replayable": true,
+        "humanConfirmed": false,
+        "handling": "Reference-application evidence; eligible for public export only after the KPR privacy scan passes.",
+        "details": {
+          "referenceChecksum": "fnv1a-76b6d301",
+          "layer": "user_overlay"
+        }
+      },
+      {
+        "id": "evidence-reversible-overlay",
+        "type": "verifier",
+        "title": "Overlay is reversible",
+        "summary": "A checkpoint exists and removing the overlay restores the reference behavior.",
+        "supportsClaimIds": [
+          "claim-local-first",
+          "claim-remember-preference"
+        ],
+        "result": "pass",
+        "source": {
+          "id": "evidence-reversible-overlay-source",
+          "type": "verifier",
+          "label": "Verifier",
+          "timestamp": "2026-08-14T08:57:03.614Z"
+        },
+        "cannotProve": [
+          "This bounded Verifier does not establish general user benefit, production safety, or lower Maintainer workload."
+        ],
+        "replayable": true,
+        "humanConfirmed": false,
+        "handling": "Reference-application evidence; eligible for public export only after the KPR privacy scan passes.",
+        "details": {
+          "rollbackTarget": "checkpoint-user-before-overlay"
+        }
+      },
+      {
+        "id": "project-default-stability",
+        "type": "verifier",
+        "title": "Public default remains unchanged",
+        "summary": "The capability is opt-in.",
+        "supportsClaimIds": [
+          "claim-public-capability"
+        ],
+        "result": "pass",
+        "source": {
+          "id": "project-default-stability-source",
+          "type": "verifier",
+          "label": "Verifier",
+          "timestamp": "2026-08-14T08:58:57.363Z"
+        },
+        "cannotProve": [
+          "This bounded Verifier does not establish general user benefit, production safety, or lower Maintainer workload."
+        ],
+        "replayable": true,
+        "humanConfirmed": false,
+        "handling": "Reference-application evidence; eligible for public export only after the KPR privacy scan passes."
+      },
+      {
+        "id": "project-source-preservation",
+        "type": "verifier",
+        "title": "Source invariant",
+        "summary": "Sources remain visible in the candidate behavior.",
+        "supportsClaimIds": [
+          "claim-invariant-sources"
+        ],
+        "result": "pass",
+        "source": {
+          "id": "project-source-preservation-source",
+          "type": "verifier",
+          "label": "Verifier",
+          "timestamp": "2026-08-14T08:58:57.363Z"
+        },
+        "cannotProve": [
+          "This bounded Verifier does not establish general user benefit, production safety, or lower Maintainer workload."
+        ],
+        "replayable": true,
+        "humanConfirmed": false,
+        "handling": "Reference-application evidence; eligible for public export only after the KPR privacy scan passes."
+      },
+      {
+        "id": "project-scope-boundary",
+        "type": "verifier",
+        "title": "Scope is narrow",
+        "summary": "The feature applies only to Research Brief documents.",
+        "supportsClaimIds": [
+          "claim-public-capability"
+        ],
+        "result": "pass",
+        "source": {
+          "id": "project-scope-boundary-source",
+          "type": "verifier",
+          "label": "Verifier",
+          "timestamp": "2026-08-14T08:58:57.363Z"
+        },
+        "cannotProve": [
+          "This bounded Verifier does not establish general user benefit, production safety, or lower Maintainer workload."
+        ],
+        "replayable": true,
+        "humanConfirmed": false,
+        "handling": "Reference-application evidence; eligible for public export only after the KPR privacy scan passes."
+      },
+      {
+        "id": "project-confirmation",
+        "type": "verifier",
+        "title": "Preference requires confirmation",
+        "summary": "Preference is saved only after user confirmation.",
+        "supportsClaimIds": [
+          "claim-remember-preference"
+        ],
+        "result": "pass",
+        "source": {
+          "id": "project-confirmation-source",
+          "type": "verifier",
+          "label": "Verifier",
+          "timestamp": "2026-08-14T08:58:57.363Z"
+        },
+        "cannotProve": [
+          "This bounded Verifier does not establish general user benefit, production safety, or lower Maintainer workload."
+        ],
+        "replayable": true,
+        "humanConfirmed": false,
+        "handling": "Reference-application evidence; eligible for public export only after the KPR privacy scan passes."
+      },
+      {
+        "id": "project-unsupported-conclusion",
+        "type": "verifier",
+        "title": "Unsupported conclusion guard",
+        "summary": "Every conclusion block must retain at least one linked evidence item.",
+        "supportsClaimIds": [
+          "claim-invariant-sources"
+        ],
+        "result": "pass",
+        "source": {
+          "id": "project-unsupported-conclusion-source",
+          "type": "verifier",
+          "label": "Verifier",
+          "timestamp": "2026-08-14T08:58:57.363Z"
+        },
+        "cannotProve": [
+          "This bounded Verifier does not establish general user benefit, production safety, or lower Maintainer workload."
+        ],
+        "replayable": true,
+        "humanConfirmed": false,
+        "handling": "Reference-application evidence; eligible for public export only after the KPR privacy scan passes.",
+        "details": {
+          "minimumEvidenceLinks": 1
+        }
+      }
+    ],
+    "decisionRecord": [
+      {
+        "id": "decision-local-overlay",
+        "actor": {
+          "id": "human-contributor",
+          "type": "human",
+          "label": "You / Contributor",
+          "role": "contributor"
+        },
+        "action": "Approved reversible local overlay",
+        "rationale": "Validate the need before asking the public project to change.",
+        "timestamp": "2026-08-14T08:57:03.614Z"
+      },
+      {
+        "id": "decision-contributor-correction-claim-problem",
+        "actor": {
+          "id": "human-contributor",
+          "type": "human",
+          "label": "You / Contributor",
+          "role": "contributor"
+        },
+        "action": "Corrected Agent-extracted claim claim-problem",
+        "rationale": "Changed the Agent wording from “The current brief makes readers traverse context before they see the decision-relevant conclusion.” to “In this Research Brief scenario, the current layout delays the decision-relevant conclusion until after the supporting context.”.",
+        "timestamp": "2026-08-14T08:57:03.614Z"
+      },
+      {
+        "id": "decision-contributor-attestation",
+        "actor": {
+          "id": "human-contributor",
+          "type": "human",
+          "label": "You / Contributor",
+          "role": "contributor"
+        },
+        "action": "Attested the reviewed KPR knowledge",
+        "rationale": "The Contributor reviewed the Agent extraction, corrected its wording, and confirmed the selected contribution scope.",
+        "timestamp": "2026-08-14T08:57:03.614Z"
+      },
+      {
+        "id": "decision-maintainer-contract",
+        "actor": {
+          "id": "human-maintainer",
+          "type": "human",
+          "label": "Project Maintainer",
+          "role": "maintainer"
+        },
+        "action": "Approved claim resolutions and Knowledge Integration Contract",
+        "rationale": "The Maintainer reviewed Agent suggestions, set the public scope, and retained final synthesis authority.",
+        "timestamp": "2026-08-14T08:58:40.371Z"
+      }
+    ],
+    "failedAttempts": [
+      "A conclusion-only layout was rejected because it hid evidence and violated the source invariant."
+    ],
+    "openQuestions": [
+      "Should the capability remain experimental until more document types are evaluated?"
+    ],
+    "provenance": [
+      {
+        "id": "source-user-request",
+        "type": "human_statement",
+        "label": "Contributor request",
+        "timestamp": "2026-08-14T08:57:03.614Z"
+      },
+      {
+        "id": "source-agent-extraction",
+        "type": "agent_extraction",
+        "label": "User-side Agent extraction",
+        "timestamp": "2026-08-14T08:57:03.614Z"
+      },
+      {
+        "id": "source-local-workspace",
+        "type": "workspace",
+        "label": "Verified local overlay",
+        "timestamp": "2026-08-14T08:57:03.614Z"
+      },
+      {
+        "id": "source-project-policy",
+        "type": "policy",
+        "label": "Research Brief Project Policy",
+        "timestamp": "2026-08-14T08:57:03.614Z"
+      }
+    ],
+    "privacyAndLicense": {
+      "privacyScan": {
+        "status": "pass",
+        "findings": [],
+        "scannedAt": "2026-08-14T08:57:03.615Z"
+      },
+      "license": "Apache-2.0 contribution",
+      "contributorOwnsContent": true
+    },
+    "humanAttestation": {
+      "actor": {
+        "id": "human-contributor",
+        "type": "human",
+        "label": "You / Contributor",
+        "role": "contributor"
+      },
+      "statement": "I confirm that these claims accurately represent my request and local verification. I reviewed the submission scope and excluded private information.",
+      "attestedAt": "2026-08-14T08:57:03.614Z",
+      "scope": [
+        "problem",
+        "expected_behavior",
+        "constraints",
+        "local_evidence"
+      ]
+    },
+    "impactAnalysis": [
+      {
+        "id": "impact-default-stability",
+        "dimension": "product_behavior",
+        "title": "Public default remains unchanged",
+        "description": "The contributor-attested expected behavior and the KPR nonGoals require conclusion-first to be an opt-in per-user choice; defaultBehavior.conclusionFirst stays false. No accepted claim proposes changing the public default. claim-public-capability is explicitly an open_question left to the Maintainer (R3).",
+        "source": "policy-required",
+        "confidence": "high",
+        "affectedScopes": [
+          "summary-layout",
+          "public-product",
+          "user-preference"
+        ],
+        "humanDecisionRequired": false,
+        "evidenceRequired": false
+      },
+      {
+        "id": "impact-interface-scope",
+        "dimension": "interface",
+        "title": "Change confined to the summary-layout surface",
+        "description": "The reversible overlay reorders sections within summary-layout (mutable, userLocal, reversible). The protected theme surface and reference core are untouched; evidence-public-core confirms layer isolation (user_overlay, referenceChecksum fnv1a-76b6d301).",
+        "source": "explicit",
+        "confidence": "high",
+        "affectedScopes": [
+          "summary-layout",
+          "theme"
+        ],
+        "humanDecisionRequired": false,
+        "evidenceRequired": false
+      },
+      {
+        "id": "impact-preference-privacy",
+        "dimension": "permissions_privacy",
+        "title": "Preference memory stays local and confirmation-gated",
+        "description": "claim-remember-preference touches preference-memory (userLocal, contributable, reversible). Policy: private preferences are never submitted automatically (privacy-private-overlay); savePreference defaults to false; the configure_summary_layout contract requires Contributor approval before writing and lists 'preference saved without confirmation' as a failure mode. Privacy scan passed with no findings.",
+        "source": "policy-required",
+        "confidence": "high",
+        "affectedScopes": [
+          "preference-memory",
+          "user-preference"
+        ],
+        "humanDecisionRequired": false,
+        "evidenceRequired": false
+      },
+      {
+        "id": "impact-evidence-provenance",
+        "dimension": "data_provenance",
+        "title": "Evidence is machine-generated, replayable, and reference-scoped",
+        "description": "All four verifier results pass but are humanConfirmed:false; each cannotProve note states it does not establish general user benefit, production safety, or lower Maintainer workload. claim-problem wording was corrected by the contributor, narrowing it to the Research Brief reference scenario. Evidence handling permits public export after the privacy scan, which has passed.",
+        "source": "explicit",
+        "confidence": "high",
+        "affectedScopes": [
+          "research-brief",
+          "summary-layout"
+        ],
+        "humanDecisionRequired": false,
+        "evidenceRequired": false
+      },
+      {
+        "id": "impact-verification-gates",
+        "dimension": "verification",
+        "title": "Knowledge gate satisfied; project-candidate gates remain outstanding",
+        "description": "human-attestation and privacy-scan are satisfied for the knowledge gate. Any future public capability derived from this KPR must pass the project-candidate verifier set (project-default-stability, project-source-preservation, project-scope-boundary, project-confirmation, project-unsupported-conclusion) plus R3 Maintainer adoption.",
+        "source": "policy-required",
+        "confidence": "high",
+        "affectedScopes": [
+          "public-product",
+          "contribution",
+          "research-brief"
+        ],
+        "humanDecisionRequired": true,
+        "evidenceRequired": true
+      },
+      {
+        "id": "impact-rollout-path",
+        "dimension": "rollout_rollback",
+        "title": "Local-first reversible rollout with R1→R2→R3 gates",
+        "description": "claim-local-first prescribes proving behavior in a reversible User Overlay before any public proposal. A rollback checkpoint (checkpoint-user-before-overlay) exists and evidence-reversible-overlay passes. Approval rules: R1 contributor overlay, R2 Maintainer integration contract, R3 Maintainer public adoption. Blind reconstruction keeps local code out of the project.",
+        "source": "explicit",
+        "confidence": "high",
+        "affectedScopes": [
+          "user-realization",
+          "contribution",
+          "public-product"
+        ],
+        "humanDecisionRequired": false,
+        "evidenceRequired": false
+      },
+      {
+        "id": "impact-confirmation-gate-gap",
+        "dimension": "verification",
+        "title": "Explicit-confirmation-before-save gate has no dedicated verifier",
+        "description": "Agent-inferred observation: claim-remember-preference requires the preference to be saved only after explicit confirmation, and the capability failure mode names 'preference saved without confirmation' — but no verifierId in the manifest specifically proves the confirmation-before-save flow. evidence-reversible-overlay demonstrates reversibility, not the confirmation gate. The Maintainer may wish to require a dedicated verifier or a manual confirmation step at implementation.",
+        "source": "agent-inferred",
+        "confidence": "medium",
+        "affectedScopes": [
+          "preference-memory",
+          "user-preference"
+        ],
+        "humanDecisionRequired": true,
+        "evidenceRequired": true
+      },
+      {
+        "id": "impact-problem-evidence-alignment",
+        "dimension": "data_provenance",
+        "title": "Problem claim rests on indirect evidence",
+        "description": "Agent-inferred observation: evidence-layout-order demonstrates the overlay renders the conclusion first (conclusionFirst: true), which supports claim-expected-order; it does not directly measure default-layout reader impact. The problem claim is safe because the contributor narrowed it to 'In this Research Brief scenario'. No additional evidence is strictly required for the scenario-scoped claim, but the contract should preserve that scoping.",
+        "source": "agent-inferred",
+        "confidence": "medium",
+        "affectedScopes": [
+          "research-brief",
+          "summary-layout"
+        ],
+        "humanDecisionRequired": false,
+        "evidenceRequired": false
+      },
+      {
+        "id": "impact-compat-boundary",
+        "dimension": "compatibility",
+        "title": "Non-Research-Brief applications are out of scope",
+        "description": "KPR nonGoals state no changes to non-Research-Brief applications; claim-problem and claim-expected-order are scoped to research-brief/summary-layout. A project-scope-boundary verification should enforce this boundary in any candidate derived from this KPR.",
+        "source": "explicit",
+        "confidence": "high",
+        "affectedScopes": [
+          "research-brief",
+          "summary-layout"
+        ],
+        "humanDecisionRequired": false,
+        "evidenceRequired": false
+      },
+      {
+        "id": "impact-preference",
+        "dimension": "user_preference",
+        "title": "Preference persistence",
+        "description": "Persists only after explicit confirmation and remains removable.",
+        "source": "agent-inferred",
+        "confidence": "medium",
+        "affectedScopes": [
+          "preference-memory"
+        ],
+        "humanDecisionRequired": true,
+        "evidenceRequired": true
+      },
+      {
+        "id": "impact-cost",
+        "dimension": "performance_cost",
+        "title": "Rendering and Agent-call cost",
+        "description": "The local layout change is bounded; any Live Agent analysis remains within the configured call and token budgets.",
+        "source": "agent-inferred",
+        "confidence": "medium",
+        "affectedScopes": [
+          "render-brief",
+          "agent-runtime-budget"
+        ],
+        "humanDecisionRequired": false,
+        "evidenceRequired": false
+      },
+      {
+        "id": "impact-documentation",
+        "dimension": "documentation",
+        "title": "Explain opt-in behavior and reset",
+        "description": "User and maintainer documentation must state the default, confirmation boundary, and rollback path.",
+        "source": "policy-required",
+        "confidence": "high",
+        "affectedScopes": [
+          "settings-help",
+          "contribution-guide"
+        ],
+        "humanDecisionRequired": false,
+        "evidenceRequired": true
+      }
+    ],
+    "claimResolutions": [
+      {
+        "claimId": "claim-problem",
+        "decision": "accept",
+        "finalStatement": "In this Research Brief scenario, the current layout delays the decision-relevant conclusion until after the supporting context.",
+        "rationale": "The local scenario and attestation establish a credible user problem.",
+        "targetScopes": [
+          "research-brief",
+          "summary-layout"
+        ],
+        "requiredVerifierIds": []
+      },
+      {
+        "claimId": "claim-expected-order",
+        "decision": "accept",
+        "finalStatement": "A reader can choose a conclusion-first layout with supporting evidence immediately after it.",
+        "rationale": "The claim is human-attested and linked to local evidence or a protected invariant.",
+        "targetScopes": [
+          "research-brief",
+          "summary-layout"
+        ],
+        "requiredVerifierIds": [
+          "project-default-stability",
+          "project-scope-boundary"
+        ]
+      },
+      {
+        "claimId": "claim-preserve-sources",
+        "decision": "accept",
+        "finalStatement": "Changing the layout must not remove evidence or source links.",
+        "rationale": "The claim is human-attested and linked to local evidence or a protected invariant.",
+        "targetScopes": [
+          "research-brief",
+          "sources"
+        ],
+        "requiredVerifierIds": [
+          "project-source-preservation",
+          "project-unsupported-conclusion"
+        ]
+      },
+      {
+        "claimId": "claim-remember-preference",
+        "decision": "accept",
+        "finalStatement": "Remember the conclusion-first layout after the user explicitly confirms it.",
+        "rationale": "The claim is human-attested and linked to local evidence or a protected invariant.",
+        "targetScopes": [
+          "user-preference"
+        ],
+        "requiredVerifierIds": [
+          "project-confirmation"
+        ]
+      },
+      {
+        "claimId": "claim-local-first",
+        "decision": "accept",
+        "finalStatement": "Prove the behavior in a reversible User Overlay before proposing a public capability.",
+        "rationale": "The claim is human-attested and linked to local evidence or a protected invariant.",
+        "targetScopes": [
+          "user-realization",
+          "contribution"
+        ],
+        "requiredVerifierIds": [
+          "project-default-stability"
+        ]
+      },
+      {
+        "claimId": "claim-invariant-sources",
+        "decision": "accept",
+        "finalStatement": "Every conclusion remains linked to visible supporting evidence and sources.",
+        "rationale": "The claim is human-attested and linked to local evidence or a protected invariant.",
+        "targetScopes": [
+          "public-core",
+          "sources"
+        ],
+        "requiredVerifierIds": [
+          "project-source-preservation",
+          "project-unsupported-conclusion"
+        ]
+      },
+      {
+        "claimId": "claim-public-capability",
+        "decision": "narrow",
+        "finalStatement": "Offer conclusion-first summaries as an experimental, opt-in capability for Research Brief documents only.",
+        "rationale": "The local evidence supports one document type and does not justify a public default change.",
+        "targetScopes": [
+          "research-brief",
+          "experimental-settings"
+        ],
+        "rollout": "experimental",
+        "requiredVerifierIds": [
+          "project-scope-boundary",
+          "project-default-stability"
+        ]
+      }
+    ],
+    "createdAt": "2026-08-14T08:57:03.614Z",
+    "updatedAt": "2026-08-14T08:58:57.364Z",
+    "integrationContract": {
+      "kprId": "kpr-5786219c-c2a8-4c0f-8e3c-4f5dd952ffed",
+      "acceptedKnowledge": [
+        {
+          "claimId": "claim-problem",
+          "decision": "accept",
+          "finalStatement": "In this Research Brief scenario, the current layout delays the decision-relevant conclusion until after the supporting context.",
+          "rationale": "The local scenario and attestation establish a credible user problem.",
+          "targetScopes": [
+            "research-brief",
+            "summary-layout"
+          ],
+          "requiredVerifierIds": []
+        },
+        {
+          "claimId": "claim-expected-order",
+          "decision": "accept",
+          "finalStatement": "A reader can choose a conclusion-first layout with supporting evidence immediately after it.",
+          "rationale": "The claim is human-attested and linked to local evidence or a protected invariant.",
+          "targetScopes": [
+            "research-brief",
+            "summary-layout"
+          ],
+          "requiredVerifierIds": [
+            "project-default-stability",
+            "project-scope-boundary"
+          ]
+        },
+        {
+          "claimId": "claim-preserve-sources",
+          "decision": "accept",
+          "finalStatement": "Changing the layout must not remove evidence or source links.",
+          "rationale": "The claim is human-attested and linked to local evidence or a protected invariant.",
+          "targetScopes": [
+            "research-brief",
+            "sources"
+          ],
+          "requiredVerifierIds": [
+            "project-source-preservation",
+            "project-unsupported-conclusion"
+          ]
+        },
+        {
+          "claimId": "claim-remember-preference",
+          "decision": "accept",
+          "finalStatement": "Remember the conclusion-first layout after the user explicitly confirms it.",
+          "rationale": "The claim is human-attested and linked to local evidence or a protected invariant.",
+          "targetScopes": [
+            "user-preference"
+          ],
+          "requiredVerifierIds": [
+            "project-confirmation"
+          ]
+        },
+        {
+          "claimId": "claim-local-first",
+          "decision": "accept",
+          "finalStatement": "Prove the behavior in a reversible User Overlay before proposing a public capability.",
+          "rationale": "The claim is human-attested and linked to local evidence or a protected invariant.",
+          "targetScopes": [
+            "user-realization",
+            "contribution"
+          ],
+          "requiredVerifierIds": [
+            "project-default-stability"
+          ]
+        },
+        {
+          "claimId": "claim-invariant-sources",
+          "decision": "accept",
+          "finalStatement": "Every conclusion remains linked to visible supporting evidence and sources.",
+          "rationale": "The claim is human-attested and linked to local evidence or a protected invariant.",
+          "targetScopes": [
+            "public-core",
+            "sources"
+          ],
+          "requiredVerifierIds": [
+            "project-source-preservation",
+            "project-unsupported-conclusion"
+          ]
+        },
+        {
+          "claimId": "claim-public-capability",
+          "decision": "narrow",
+          "finalStatement": "Offer conclusion-first summaries as an experimental, opt-in capability for Research Brief documents only.",
+          "rationale": "The local evidence supports one document type and does not justify a public default change.",
+          "targetScopes": [
+            "research-brief",
+            "experimental-settings"
+          ],
+          "rollout": "experimental",
+          "requiredVerifierIds": [
+            "project-scope-boundary",
+            "project-default-stability"
+          ]
+        }
+      ],
+      "rejectedKnowledge": [],
+      "protectedInvariants": [
+        "Source links remain visible and attached to evidence.",
+        "The public default does not change without Maintainer approval.",
+        "Private preferences are not submitted automatically.",
+        "Project Agent completion requires verifier evidence.",
+        "Final public adoption belongs to the Maintainer."
+      ],
+      "implementationBoundary": [
+        "Research Brief documents only",
+        "Opt-in setting; public default unchanged",
+        "Preference saved only after confirmation",
+        "Contributor patch remains hidden from Project Agent"
+      ],
+      "requiredVerifiers": [
+        "project-default-stability",
+        "project-source-preservation",
+        "project-scope-boundary",
+        "project-confirmation",
+        "project-unsupported-conclusion"
+      ],
+      "unresolvedQuestions": [],
+      "approvedBy": {
+        "id": "human-maintainer",
+        "type": "human",
+        "label": "Project Maintainer",
+        "role": "maintainer"
+      },
+      "approvedAt": "2026-08-14T08:58:40.371Z"
+    }
+  },
+  "contract": {
+    "kprId": "kpr-5786219c-c2a8-4c0f-8e3c-4f5dd952ffed",
+    "acceptedKnowledge": [
+      {
+        "claimId": "claim-problem",
+        "decision": "accept",
+        "finalStatement": "In this Research Brief scenario, the current layout delays the decision-relevant conclusion until after the supporting context.",
+        "rationale": "The local scenario and attestation establish a credible user problem.",
+        "targetScopes": [
+          "research-brief",
+          "summary-layout"
+        ],
+        "requiredVerifierIds": []
+      },
+      {
+        "claimId": "claim-expected-order",
+        "decision": "accept",
+        "finalStatement": "A reader can choose a conclusion-first layout with supporting evidence immediately after it.",
+        "rationale": "The claim is human-attested and linked to local evidence or a protected invariant.",
+        "targetScopes": [
+          "research-brief",
+          "summary-layout"
+        ],
+        "requiredVerifierIds": [
+          "project-default-stability",
+          "project-scope-boundary"
+        ]
+      },
+      {
+        "claimId": "claim-preserve-sources",
+        "decision": "accept",
+        "finalStatement": "Changing the layout must not remove evidence or source links.",
+        "rationale": "The claim is human-attested and linked to local evidence or a protected invariant.",
+        "targetScopes": [
+          "research-brief",
+          "sources"
+        ],
+        "requiredVerifierIds": [
+          "project-source-preservation",
+          "project-unsupported-conclusion"
+        ]
+      },
+      {
+        "claimId": "claim-remember-preference",
+        "decision": "accept",
+        "finalStatement": "Remember the conclusion-first layout after the user explicitly confirms it.",
+        "rationale": "The claim is human-attested and linked to local evidence or a protected invariant.",
+        "targetScopes": [
+          "user-preference"
+        ],
+        "requiredVerifierIds": [
+          "project-confirmation"
+        ]
+      },
+      {
+        "claimId": "claim-local-first",
+        "decision": "accept",
+        "finalStatement": "Prove the behavior in a reversible User Overlay before proposing a public capability.",
+        "rationale": "The claim is human-attested and linked to local evidence or a protected invariant.",
+        "targetScopes": [
+          "user-realization",
+          "contribution"
+        ],
+        "requiredVerifierIds": [
+          "project-default-stability"
+        ]
+      },
+      {
+        "claimId": "claim-invariant-sources",
+        "decision": "accept",
+        "finalStatement": "Every conclusion remains linked to visible supporting evidence and sources.",
+        "rationale": "The claim is human-attested and linked to local evidence or a protected invariant.",
+        "targetScopes": [
+          "public-core",
+          "sources"
+        ],
+        "requiredVerifierIds": [
+          "project-source-preservation",
+          "project-unsupported-conclusion"
+        ]
+      },
+      {
+        "claimId": "claim-public-capability",
+        "decision": "narrow",
+        "finalStatement": "Offer conclusion-first summaries as an experimental, opt-in capability for Research Brief documents only.",
+        "rationale": "The local evidence supports one document type and does not justify a public default change.",
+        "targetScopes": [
+          "research-brief",
+          "experimental-settings"
+        ],
+        "rollout": "experimental",
+        "requiredVerifierIds": [
+          "project-scope-boundary",
+          "project-default-stability"
+        ]
+      }
+    ],
+    "rejectedKnowledge": [],
+    "protectedInvariants": [
+      "Source links remain visible and attached to evidence.",
+      "The public default does not change without Maintainer approval.",
+      "Private preferences are not submitted automatically.",
+      "Project Agent completion requires verifier evidence.",
+      "Final public adoption belongs to the Maintainer."
+    ],
+    "implementationBoundary": [
+      "Research Brief documents only",
+      "Opt-in setting; public default unchanged",
+      "Preference saved only after confirmation",
+      "Contributor patch remains hidden from Project Agent"
+    ],
+    "requiredVerifiers": [
+      "project-default-stability",
+      "project-source-preservation",
+      "project-scope-boundary",
+      "project-confirmation",
+      "project-unsupported-conclusion"
+    ],
+    "unresolvedQuestions": [],
+    "approvedBy": {
+      "id": "human-maintainer",
+      "type": "human",
+      "label": "Project Maintainer",
+      "role": "maintainer"
+    },
+    "approvedAt": "2026-08-14T08:58:40.371Z"
+  },
+  "projectCandidate": {
+    "featureId": "conclusion-first-summary",
+    "label": "Conclusion-first summary (experimental, opt-in)",
+    "enabledByDefault": false,
+    "applicableDocumentTypes": [
+      "research-brief"
+    ],
+    "preserveSources": true,
+    "saveOnlyAfterConfirmation": true,
+    "rollout": "experimental"
+  }
+}

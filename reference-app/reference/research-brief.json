@@ -1,0 +1,15 @@
+{
+  "title": "Do smaller language models belong in local research workflows?",
+  "question": "When should a research team prefer a smaller local model over a hosted frontier model?",
+  "conclusion": "Use a smaller local model when privacy, predictable cost, or offline availability matters more than frontier reasoning quality; keep a hosted model available for the hardest synthesis and verification tasks.",
+  "context": "Research teams increasingly mix local and hosted models. The decision is not a single quality ranking: it depends on data sensitivity, latency, hardware, task difficulty, and the cost of verification.",
+  "evidence": [
+    { "id": "source-1", "claim": "Local inference can keep sensitive prompts inside a controlled environment.", "source": "Project privacy notes", "url": "project://knowledge/privacy-notes" },
+    { "id": "source-2", "claim": "Hosted frontier models remain stronger on difficult synthesis tasks in the reference evaluation.", "source": "Reference evaluation v0.1", "url": "project://evidence/reference-eval" },
+    { "id": "source-3", "claim": "The total cost depends on utilization and local hardware, not token price alone.", "source": "Cost model assumptions", "url": "project://knowledge/cost-model" }
+  ],
+  "limitations": [
+    "The reference evaluation is illustrative, not a comprehensive model benchmark.",
+    "Local deployment still requires security updates and operational expertise."
+  ]
+}

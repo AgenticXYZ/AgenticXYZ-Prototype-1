@@ -1,0 +1,4 @@
+--- /dev/null
++++ b/capabilities/conclusion-first.json
+@@ governed structured candidate @@
++{"featureId":"conclusion-first-research-brief","label":"Conclusion first","enabledByDefault":false,"applicableDocumentTypes":["research-brief"],"preserveSources":true,"saveOnlyAfterConfirmation":true,"rollout":"experimental"}

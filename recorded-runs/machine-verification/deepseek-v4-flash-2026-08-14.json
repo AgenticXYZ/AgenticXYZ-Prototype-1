@@ -1,0 +1,104 @@
+{
+  "artifactFormatVersion": "0.1.0",
+  "attestationType": "credentialed-live-smoke-machine-verification",
+  "evidenceBoundary": "Machine metadata and capture checksums are linked to a separately recorded Human Review; reviewed proposal contents are frozen in the tracked credentialed replay.",
+  "reviewStatus": "approved",
+  "supportDecision": "approved_for_prototype_reference",
+  "provider": "deepseek",
+  "model": "deepseek-v4-flash",
+  "providerOptions": {
+    "thinking": "enabled",
+    "reasoningEffort": "high",
+    "strictToolCalls": true
+  },
+  "date": "2026-08-14T08:58:57.364Z",
+  "source": {
+    "revision": "1a30124a109445276f26a1173c75a3378008d806",
+    "worktreeDirty": false
+  },
+  "checks": {
+    "connection": "pass",
+    "userSideClaimExtraction": "pass",
+    "structuredToolCall": "pass",
+    "projectSynthesis": "pass",
+    "verifierResult": "pass",
+    "maintainerGateTransition": "pass",
+    "exportAndRedaction": "pass"
+  },
+  "humanGovernance": {
+    "gateExecution": "automated_test_harness",
+    "decisionStatus": "ratified_by_human",
+    "representedActor": "Project Maintainer",
+    "decisionCount": 7,
+    "agentSuggestionsRetainedInReplay": true,
+    "stagedDecisionDivergenceCount": 1,
+    "maintainerOpenQuestionCount": 6,
+    "projectOpenQuestionCount": 2
+  },
+  "runs": [
+    {
+      "role": "user-side",
+      "status": "completed",
+      "skillId": "adapt_software_locally",
+      "providerCallsUsed": 1,
+      "toolCallsUsed": 1,
+      "toolCallEvents": 1,
+      "maxDurationMs": 0,
+      "inputTokens": 3820,
+      "outputTokens": 2379
+    },
+    {
+      "role": "maintainer-side",
+      "status": "completed",
+      "skillId": "understand_kpr",
+      "providerCallsUsed": 1,
+      "toolCallsUsed": 1,
+      "toolCallEvents": 1,
+      "maxDurationMs": 0,
+      "inputTokens": 9248,
+      "outputTokens": 12120
+    },
+    {
+      "role": "project",
+      "status": "completed",
+      "skillId": "implement_from_contract",
+      "providerCallsUsed": 1,
+      "toolCallsUsed": 1,
+      "toolCallEvents": 1,
+      "maxDurationMs": 0,
+      "inputTokens": 4415,
+      "outputTokens": 2245
+    }
+  ],
+  "verifiers": [
+    { "id": "project-default-stability", "result": "pass" },
+    { "id": "project-source-preservation", "result": "pass" },
+    { "id": "project-scope-boundary", "result": "pass" },
+    { "id": "project-confirmation", "result": "pass" },
+    { "id": "project-unsupported-conclusion", "result": "pass" }
+  ],
+  "humanReview": {
+    "reviewer": {
+      "id": "project-maintainer",
+      "type": "human",
+      "label": "Project Maintainer"
+    },
+    "reviewedAt": "2026-08-14T09:31:10Z",
+    "statement": "批准 DeepSeek 支持记录，并采用 agent-review-brief.zh-CN.md 中列出的 Claim 决定、问题分类与证据边界。",
+    "adoptedBriefSha256": "19398fd48b24b32b9fbe96be6f743d16318449af1f9760898b17fad9cd28382f",
+    "reviewedReplay": "recorded-runs/reviewed/deepseek-v4-flash-2026-08-14"
+  },
+  "fullArtifactBundle": {
+    "bundled": true,
+    "localRelativePath": "live-smoke/deepseek/2026-08-14T08-58-57-364Z",
+    "trackedRelativePath": "recorded-runs/reviewed/deepseek-v4-flash-2026-08-14/capture",
+    "checksumAlgorithm": "SHA-256",
+    "artifacts": {
+      "live-smoke.json": "038ff02f4d9b30560696d1d8d5660f9bd43864dc6dbbf084e26ed3ec0ff31264",
+      "kpr.json": "688d19632cafde14f32c8c688be1655b46174fa21ac9c6e187a83203763d6f3b",
+      "kpr.md": "dd3a52e3c60c3427c7c7466a970048debc965a99b490276a33d057553774ea8c",
+      "replay-state.json": "fe15ec483005db4363036aa516d7b563c55d5ebda731dbde02f37d689063d311",
+      "review.md": "6fed08e6170c373a30c610454445cb9e37d086b2c552537f6d7a658cfff8972d"
+    }
+  }
+}

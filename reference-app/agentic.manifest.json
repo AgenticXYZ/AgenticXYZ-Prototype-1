@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "0.1.0",
+  "projectId": "research-brief",
+  "projectVersion": "0.1.0",
+  "name": "Research Brief",
+  "description": "A source-preserving application for concise research briefs.",
+  "knowledgeLayers": [
+    { "id": "developer-intent", "label": "Developer Intent / Policy", "authority": "Project maintainer", "mutableBy": ["maintainer"] },
+    { "id": "reference-core", "label": "Reference Capability Core", "authority": "Project repository", "mutableBy": ["project"] },
+    { "id": "user-realization", "label": "User Realization / Overlay", "authority": "Local user", "mutableBy": ["user-side", "contributor"] }
+  ],
+  "capabilities": [
+    {
+      "id": "render_brief",
+      "label": "Render research brief",
+      "description": "Render context, conclusion, evidence, sources, and limitations.",
+      "purpose": "Render a source-preserving Research Brief using the reference behavior or an approved local overlay.",
+      "inputSchema": { "type": "object", "required": ["document"] },
+      "outputSchema": { "type": "object", "required": ["sections", "sourceCount"] },
+      "sideEffects": [],
+      "permissionLevel": "R0",
+      "riskLevel": "R0",
+      "reversible": true,
+      "examples": ["Render the reference brief while keeping every source link visible."],
+      "failureModes": ["A required section is missing.", "A conclusion is shown without linked evidence."],
+      "humanApprovalRequired": false,
+      "mutableSurfaces": ["summary-layout"],
+      "verifierIds": ["source-preservation", "required-sections"]
+    },
+    {
+      "id": "configure_summary_layout",
+      "label": "Configure summary layout",
+      "description": "Change the order in which the conclusion and evidence are presented.",
+      "purpose": "Create a reversible User Overlay for conclusion-first presentation and confirmed preference memory.",
+      "inputSchema": { "type": "object", "required": ["conclusionFirst"] },
+      "outputSchema": { "type": "object", "required": ["overlay"] },
+      "sideEffects": ["Writes a local User Overlay after Contributor approval."],
+      "permissionLevel": "R1",
+      "riskLevel": "R1",
+      "reversible": true,
+      "examples": ["Put the conclusion first for this user without changing the public default."],
+      "failureModes": ["The overlay changes the protected public core.", "Sources are removed.", "The preference is saved without confirmation."],
+      "humanApprovalRequired": true,
+      "mutableSurfaces": ["summary-layout", "preference-memory"],
+      "verifierIds": ["source-preservation", "public-core-unchanged", "reversible-overlay"]
+    }
+  ],
+  "mutableSurfaces": [
+    { "id": "summary-layout", "label": "Summary layout", "category": "interface", "protected": false, "userLocal": true, "projectConfigurable": true, "contributable": true, "reversible": true },
+    { "id": "theme", "label": "Reference visual theme", "category": "interface", "protected": true, "userLocal": false, "projectConfigurable": true, "contributable": false, "reversible": true },
+    { "id": "preference-memory", "label": "Confirmed preference memory", "category": "preference", "protected": false, "userLocal": true, "projectConfigurable": false, "contributable": true, "reversible": true }
+  ],
+  "protectedInvariants": [
+    "Source links remain visible and attached to evidence.",
+    "The public default does not change without Maintainer approval.",
+    "Private preferences are not submitted automatically.",
+    "Project Agent completion requires verifier evidence.",
+    "Final public adoption belongs to the Maintainer."
+  ],
+  "verifierIds": ["source-preservation", "required-sections", "public-core-unchanged", "reversible-overlay", "unsupported-conclusion", "human-attestation", "privacy-scan", "project-default-stability", "project-source-preservation", "project-scope-boundary", "project-confirmation", "project-unsupported-conclusion"],
+  "riskPolicyVersion": "0.1.0",
+  "kprSchemaVersion": "0.1.0"
+}

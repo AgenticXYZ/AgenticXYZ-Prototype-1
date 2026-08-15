@@ -1,0 +1,127 @@
+{
+  "kprId": "kpr-8230a484-b41b-4624-b5ca-cc7f67c55564",
+  "acceptedKnowledge": [
+    {
+      "claimId": "claim-problem",
+      "decision": "accept",
+      "finalStatement": "In this Research Brief scenario, the current layout delays the decision-relevant conclusion until after the supporting context.",
+      "rationale": "The local scenario and attestation establish a credible user problem.",
+      "targetScopes": [
+        "research-brief",
+        "summary-layout"
+      ],
+      "requiredVerifierIds": []
+    },
+    {
+      "claimId": "claim-expected-order",
+      "decision": "accept",
+      "finalStatement": "A reader can choose a conclusion-first layout with supporting evidence immediately after it.",
+      "rationale": "The claim is human-attested and linked to local evidence or a protected invariant.",
+      "targetScopes": [
+        "research-brief",
+        "summary-layout"
+      ],
+      "requiredVerifierIds": [
+        "project-default-stability",
+        "project-scope-boundary"
+      ]
+    },
+    {
+      "claimId": "claim-preserve-sources",
+      "decision": "accept",
+      "finalStatement": "Changing the layout must not remove evidence or source links.",
+      "rationale": "The claim is human-attested and linked to local evidence or a protected invariant.",
+      "targetScopes": [
+        "research-brief",
+        "sources"
+      ],
+      "requiredVerifierIds": [
+        "project-source-preservation",
+        "project-unsupported-conclusion"
+      ]
+    },
+    {
+      "claimId": "claim-remember-preference",
+      "decision": "accept",
+      "finalStatement": "Remember the conclusion-first layout after the user explicitly confirms it.",
+      "rationale": "The claim is human-attested and linked to local evidence or a protected invariant.",
+      "targetScopes": [
+        "user-preference"
+      ],
+      "requiredVerifierIds": [
+        "project-confirmation"
+      ]
+    },
+    {
+      "claimId": "claim-local-first",
+      "decision": "accept",
+      "finalStatement": "Prove the behavior in a reversible User Overlay before proposing a public capability.",
+      "rationale": "The claim is human-attested and linked to local evidence or a protected invariant.",
+      "targetScopes": [
+        "user-realization",
+        "contribution"
+      ],
+      "requiredVerifierIds": [
+        "project-default-stability"
+      ]
+    },
+    {
+      "claimId": "claim-invariant-sources",
+      "decision": "accept",
+      "finalStatement": "Every conclusion remains linked to visible supporting evidence and sources.",
+      "rationale": "The claim is human-attested and linked to local evidence or a protected invariant.",
+      "targetScopes": [
+        "public-core",
+        "sources"
+      ],
+      "requiredVerifierIds": [
+        "project-source-preservation",
+        "project-unsupported-conclusion"
+      ]
+    },
+    {
+      "claimId": "claim-public-capability",
+      "decision": "narrow",
+      "finalStatement": "Offer conclusion-first summaries as an experimental, opt-in capability for Research Brief documents only.",
+      "rationale": "The local evidence supports one document type and does not justify a public default change.",
+      "targetScopes": [
+        "research-brief",
+        "experimental-settings"
+      ],
+      "rollout": "experimental",
+      "requiredVerifierIds": [
+        "project-scope-boundary",
+        "project-default-stability"
+      ]
+    }
+  ],
+  "rejectedKnowledge": [],
+  "protectedInvariants": [
+    "Source links remain visible and attached to evidence.",
+    "The public default does not change without Maintainer approval.",
+    "Private preferences are not submitted automatically.",
+    "Project Agent completion requires verifier evidence.",
+    "Final public adoption belongs to the Maintainer."
+  ],
+  "implementationBoundary": [
+    "Research Brief documents only",
+    "Opt-in setting; public default unchanged",
+    "Preference saved only after confirmation",
+    "Contributor patch remains hidden from Project Agent"
+  ],
+  "requiredVerifiers": [
+    "project-default-stability",
+    "project-source-preservation",
+    "project-scope-boundary",
+    "project-confirmation",
+    "project-unsupported-conclusion"
+  ],
+  "unresolvedQuestions": [],
+  "approvedBy": {
+    "id": "human-maintainer",
+    "type": "human",
+    "label": "Project Maintainer",
+    "role": "maintainer"
+  },
+  "approvedAt": "2026-08-15T03:03:57.355Z"
+}

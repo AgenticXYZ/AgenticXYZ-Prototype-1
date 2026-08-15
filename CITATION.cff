@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "If you use this reference system, please cite AgenticXYZ Prototype 1."
+title: "AgenticXYZ Prototype 1: Toward Agent-Human-Native Systems"
+type: software
+version: 1.0.0-rc.1
+date-released: 2026-08-14
+authors:
+  - name: "AgenticXYZ contributors"
+license: MIT
+abstract: "An article-first executable reference system for Agents with People, Human in the Loop, Knowledge-based Pull Requests, and human-governed Agentic Runtime behavior."
+keywords:
+  - agentic software
+  - human-agent collaboration
+  - knowledge-based pull request
+  - human in the loop

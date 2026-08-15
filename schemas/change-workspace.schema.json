@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agenticxyz.org/schemas/change-workspace/0.1.0",
+  "title": "AgenticXYZ ChangeWorkspace",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "ownerRole", "status", "baseVersion", "files", "checkpoints", "verifierResults"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "ownerRole": { "enum": ["user-side", "project"] },
+    "status": { "enum": ["clean", "proposed", "approved", "verified", "failed", "rolled_back", "adopted"] },
+    "baseVersion": { "type": "string" },
+    "files": { "type": "array", "items": { "$ref": "#/$defs/file" } },
+    "checkpoints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "label", "createdAt", "files"],
+        "properties": {
+          "id": { "type": "string" }, "label": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "files": { "type": "array", "items": { "$ref": "#/$defs/file" } }
+        }
+      }
+    },
+    "verifierResults": { "type": "array", "items": { "type": "object" } }
+  },
+  "$defs": {
+    "file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "content", "layer", "checksum"],
+      "properties": {
+        "path": { "type": "string" }, "content": { "type": "string" },
+        "layer": { "enum": ["reference", "user_overlay", "project_candidate"] },
+        "checksum": { "type": "string", "pattern": "^fnv1a-[a-f0-9]{8}$" }
+      }
+    }
+  }
+}

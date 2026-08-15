@@ -1,0 +1,15 @@
+node_modules/
+dist/
+coverage/
+playwright-report/
+test-results/
+output/
+live-smoke/
+.playwright-cli/
+.env
+.env.local
+.env.*.local
+*.log
+.DS_Store
+docs/images/generated/
+!docs/images/.gitkeep

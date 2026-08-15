@@ -1,0 +1,2 @@
+# Preserve the exact human-adopted review-brief bytes bound by SHA-256.
+recorded-runs/reviewed/**/agent-review-brief.zh-CN.md whitespace=-blank-at-eof

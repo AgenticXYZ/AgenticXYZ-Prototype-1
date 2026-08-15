@@ -1,0 +1,50 @@
+[
+  {
+    "id": "decision-local-overlay",
+    "actor": {
+      "id": "human-contributor",
+      "type": "human",
+      "label": "You / Contributor",
+      "role": "contributor"
+    },
+    "action": "Approved reversible local overlay",
+    "rationale": "Validate the need before asking the public project to change.",
+    "timestamp": "2026-08-15T03:03:57.355Z"
+  },
+  {
+    "id": "decision-contributor-correction-claim-problem",
+    "actor": {
+      "id": "human-contributor",
+      "type": "human",
+      "label": "You / Contributor",
+      "role": "contributor"
+    },
+    "action": "Corrected Agent-extracted claim claim-problem",
+    "rationale": "Changed the Agent wording from “The current brief makes readers traverse context before they see the decision-relevant conclusion.” to “In this Research Brief scenario, the current layout delays the decision-relevant conclusion until after the supporting context.”.",
+    "timestamp": "2026-08-15T03:03:57.355Z"
+  },
+  {
+    "id": "decision-contributor-attestation",
+    "actor": {
+      "id": "human-contributor",
+      "type": "human",
+      "label": "You / Contributor",
+      "role": "contributor"
+    },
+    "action": "Attested the reviewed KPR knowledge",
+    "rationale": "The Contributor reviewed the Agent extraction, optionally corrected wording that needed revision, and confirmed the selected contribution scope.",
+    "timestamp": "2026-08-15T03:03:57.355Z"
+  },
+  {
+    "id": "decision-maintainer-contract",
+    "actor": {
+      "id": "human-maintainer",
+      "type": "human",
+      "label": "Project Maintainer",
+      "role": "maintainer"
+    },
+    "action": "Approved claim resolutions and Knowledge Integration Contract",
+    "rationale": "The Maintainer reviewed Agent suggestions, set the public scope, and retained final synthesis authority.",
+    "timestamp": "2026-08-15T03:03:57.355Z"
+  }
+]

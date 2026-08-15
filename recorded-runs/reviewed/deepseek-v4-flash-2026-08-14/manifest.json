@@ -1,0 +1,50 @@
+{
+  "artifactFormatVersion": "0.1.0",
+  "recordType": "human-reviewed-credentialed-replay",
+  "reviewStatus": "approved",
+  "supportDecision": "approved_for_prototype_reference",
+  "provider": "deepseek",
+  "model": "deepseek-v4-flash",
+  "providerOptions": {
+    "thinking": "enabled",
+    "reasoningEffort": "high",
+    "strictToolCalls": true
+  },
+  "capture": {
+    "date": "2026-08-14T08:58:57.364Z",
+    "source": {
+      "revision": "1a30124a109445276f26a1173c75a3378008d806",
+      "worktreeDirty": false
+    },
+    "machineChecks": {
+      "connection": "pass",
+      "userSideClaimExtraction": "pass",
+      "structuredToolCall": "pass",
+      "projectSynthesis": "pass",
+      "verifierResult": "pass",
+      "maintainerGateTransition": "pass",
+      "exportAndRedaction": "pass"
+    },
+    "machineAttestation": "../../machine-verification/deepseek-v4-flash-2026-08-14.json"
+  },
+  "review": {
+    "reviewer": {
+      "id": "project-maintainer",
+      "type": "human",
+      "label": "Project Maintainer"
+    },
+    "reviewedAt": "2026-08-14T09:31:10Z",
+    "statement": "批准 DeepSeek 支持记录，并采用 agent-review-brief.zh-CN.md 中列出的 Claim 决定、问题分类与证据边界。",
+    "adoptedBrief": {
+      "file": "agent-review-brief.zh-CN.md",
+      "sha256": "19398fd48b24b32b9fbe96be6f743d16318449af1f9760898b17fad9cd28382f"
+    }
+  },
+  "evidenceBoundaries": [
+    "Approval covers the Prototype 1 DeepSeek reference record, not production readiness.",
+    "Approval does not establish lower Maintainer cognitive load, improved contribution quality, general user benefit, or cross-domain generality.",
+    "OpenAI and Anthropic remain Mock Contract covered only and receive no Live support claim.",
+    "The public default remains unchanged; the reviewed capability is Research Brief only, experimental, and opt-in.",
+    "Machine Verifiers remain machine-executed evidence even after Human Review."
+  ]
+}

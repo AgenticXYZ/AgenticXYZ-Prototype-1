@@ -1,0 +1,16 @@
+{
+  "algorithm": "SHA-256",
+  "viewport": "1920x1080",
+  "artifacts": {
+    "01-system-overview.png": "0b41033d6496469b7741876953af35b266a6793bb87ab2eb68a335ab254b09be",
+    "02-user-workspace.png": "2fd2f029124ec62ed5ace49d4d0c84208ed4af774e20f1bf9186e9064680a763",
+    "03-human-attestation.png": "ee6850b7599099831bbd28bd7932303065a3befff4e085127ebfe90c0b0d0bf9",
+    "04-decision-brief.png": "e06b007c91cd7a80cbccb9b2ab1db4734a74751a050f141ea6a3fc65e508f006",
+    "05-knowledge-diff-provenance.png": "ee6850b7599099831bbd28bd7932303065a3befff4e085127ebfe90c0b0d0bf9",
+    "06-impact-maintainer-shaping.png": "5baa721d63e20cec03aa85905651cb3df0960d774c29dc02d7c54d33df94e40f",
+    "07-integration-contract.png": "626b49097ca2369ed946d96e82c8a17cf1febe9baa3c84f2694b7ff9e722220e",
+    "08-behavior-knowledge-evidence-diff.png": "b6589ed674a880e7bb6ad710aa189d23832298511cc1b2279cfa18b11eb7550d",
+    "09-verification-failure-rollback.png": "fb0c38a7b9ed23d9751a4777e13bc84ff98feec91790113860539662738441a8",
+    "10-final-governance.png": "85c21344fcee88c6d824773573b94ab967717edc1a1d7af3bd0675af61b9125a"
+  }
+}

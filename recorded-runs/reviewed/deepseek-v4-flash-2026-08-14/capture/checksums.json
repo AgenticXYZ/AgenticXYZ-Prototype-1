@@ -1,0 +1,10 @@
+{
+  "algorithm": "FNV-1a 32-bit (artifact integrity, not cryptographic signing)",
+  "artifacts": {
+    "live-smoke.json": "fnv1a-15da31b8",
+    "kpr.json": "fnv1a-e8492dac",
+    "kpr.md": "fnv1a-177d8b4f",
+    "replay-state.json": "fnv1a-2c4f5066",
+    "review.md": "fnv1a-e6b2a50d"
+  }
+}

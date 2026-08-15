@@ -1,0 +1,14 @@
+[
+  { "id": "source-preservation", "scope": "user_overlay", "purpose": "Every evidence item retains a visible source link." },
+  { "id": "required-sections", "scope": "reference_core", "purpose": "The brief retains context, conclusion, evidence, sources, and limitations." },
+  { "id": "public-core-unchanged", "scope": "user_overlay", "purpose": "A User-side Agent proposal cannot mutate the public Reference Core." },
+  { "id": "reversible-overlay", "scope": "user_overlay", "purpose": "A checkpoint restores the reference behavior." },
+  { "id": "unsupported-conclusion", "scope": "reference_core", "purpose": "A conclusion without linked evidence is rejected." },
+  { "id": "human-attestation", "scope": "knowledge_gate", "purpose": "Every Agent-extracted Contributor claim is explicitly attested by a human." },
+  { "id": "privacy-scan", "scope": "knowledge_gate", "purpose": "The KPR contains no secret or private information before submission." },
+  { "id": "project-default-stability", "scope": "project_candidate", "purpose": "The new capability remains opt-in." },
+  { "id": "project-source-preservation", "scope": "project_candidate", "purpose": "Project reconstruction preserves sources." },
+  { "id": "project-scope-boundary", "scope": "project_candidate", "purpose": "The feature applies only to Research Brief documents." },
+  { "id": "project-confirmation", "scope": "project_candidate", "purpose": "Preference persistence requires explicit confirmation." },
+  { "id": "project-unsupported-conclusion", "scope": "project_candidate", "purpose": "Every conclusion retains at least one evidence item." }
+]

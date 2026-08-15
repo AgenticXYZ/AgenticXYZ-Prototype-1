@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agenticxyz.org/schemas/kpr/0.1.0",
+  "title": "AgenticXYZ Knowledge-based Pull Request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "id",
+    "title",
+    "status",
+    "problem",
+    "scope",
+    "expectedBehavior",
+    "acceptanceCriteria",
+    "nonGoals",
+    "protectedInvariants",
+    "knowledgeClaims",
+    "evidence",
+    "decisionRecord",
+    "failedAttempts",
+    "openQuestions",
+    "provenance",
+    "privacyAndLicense",
+    "impactAnalysis",
+    "claimResolutions",
+    "createdAt",
+    "updatedAt"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "0.1.0" },
+    "id": { "type": "string", "minLength": 1 },
+    "title": { "type": "string", "minLength": 1 },
+    "status": {
+      "enum": [
+        "draft", "contributor_review", "submitted", "knowledge_gate", "needs_more_knowledge",
+        "rejected", "accepted_for_synthesis", "project_agent_synthesis", "verification",
+        "revision_required", "rolled_back", "verification_passed", "maintainer_review",
+        "adopted", "deferred"
+      ]
+    },
+    "problem": { "type": "string", "minLength": 1 },
+    "scope": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "expectedBehavior": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "acceptanceCriteria": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "nonGoals": { "type": "array", "items": { "type": "string" } },
+    "protectedInvariants": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "knowledgeClaims": { "type": "array", "items": { "$ref": "#/$defs/knowledgeClaim" }, "minItems": 1 },
+    "evidence": { "type": "array", "items": { "$ref": "#/$defs/evidence" } },
+    "decisionRecord": { "type": "array", "items": { "type": "object" } },
+    "failedAttempts": { "type": "array", "items": { "type": "string" } },
+    "openQuestions": { "type": "array", "items": { "type": "string" } },
+    "provenance": { "type": "array", "items": { "$ref": "#/$defs/sourceRef" }, "minItems": 1 },
+    "privacyAndLicense": {
+      "type": "object",
+      "required": ["privacyScan", "license", "contributorOwnsContent"],
+      "properties": {
+        "privacyScan": { "type": "object" },
+        "license": { "type": "string" },
+        "contributorOwnsContent": { "type": "boolean" }
+      }
+    },
+    "humanAttestation": { "type": "object" },
+    "localImplementationReference": { "type": "object" },
+    "impactAnalysis": { "type": "array", "items": { "type": "object" } },
+    "claimResolutions": { "type": "array", "items": { "type": "object" } },
+    "integrationContract": { "type": "object" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  },
+  "$defs": {
+    "actorRef": {
+      "type": "object",
+      "required": ["id", "type", "label"],
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "enum": ["human", "agent", "verifier", "system"] },
+        "label": { "type": "string" },
+        "role": { "type": "string" }
+      }
+    },
+    "sourceRef": {
+      "type": "object",
+      "required": ["id", "type", "label", "timestamp"],
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string" },
+        "label": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      }
+    },
+    "knowledgeClaim": {
+      "type": "object",
+      "required": [
+        "id", "type", "statement", "scope", "createdBy", "derivedFrom", "agentGenerated",
+        "evidenceRefs", "confidence", "status", "conflictsWith", "supersedes", "limitations"
+      ],
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string" },
+        "statement": { "type": "string", "minLength": 1 },
+        "scope": { "type": "array", "items": { "type": "string" } },
+        "createdBy": { "$ref": "#/$defs/actorRef" },
+        "derivedFrom": { "type": "array", "items": { "$ref": "#/$defs/sourceRef" } },
+        "agentGenerated": { "type": "boolean" },
+        "humanAttestation": { "type": "object" },
+        "evidenceRefs": { "type": "array", "items": { "type": "string" } },
+        "confidence": { "enum": ["low", "medium", "high"] },
+        "status": { "type": "string" },
+        "conflictsWith": { "type": "array", "items": { "type": "string" } },
+        "supersedes": { "type": "array", "items": { "type": "string" } },
+        "limitations": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["id", "type", "title", "summary", "supportsClaimIds", "result", "source", "cannotProve", "replayable", "humanConfirmed", "handling"],
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string" },
+        "title": { "type": "string" },
+        "summary": { "type": "string" },
+        "supportsClaimIds": { "type": "array", "items": { "type": "string" } },
+        "result": { "enum": ["pass", "fail", "partial", "informational"] },
+        "source": { "$ref": "#/$defs/sourceRef" },
+        "cannotProve": { "type": "array", "items": { "type": "string" } },
+        "replayable": { "type": "boolean" },
+        "humanConfirmed": { "type": "boolean" },
+        "handling": { "type": "string" },
+        "details": { "type": "object" }
+      }
+    }
+  }
+}

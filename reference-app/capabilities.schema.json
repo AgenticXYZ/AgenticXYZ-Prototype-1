@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agenticxyz.org/reference-app/capability/0.1.0",
+  "title": "Research Brief Capability Definition",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "label", "description", "purpose", "inputSchema", "outputSchema", "sideEffects", "permissionLevel", "riskLevel", "reversible", "examples", "failureModes", "humanApprovalRequired", "mutableSurfaces", "verifierIds"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "label": { "type": "string", "minLength": 1 },
+    "description": { "type": "string" },
+    "purpose": { "type": "string", "minLength": 1 },
+    "inputSchema": { "type": "object" },
+    "outputSchema": { "type": "object" },
+    "sideEffects": { "type": "array", "items": { "type": "string" } },
+    "permissionLevel": { "enum": ["R0", "R1", "R2", "R3"] },
+    "riskLevel": { "enum": ["R0", "R1", "R2", "R3"] },
+    "reversible": { "type": "boolean" },
+    "examples": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "failureModes": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "humanApprovalRequired": { "type": "boolean" },
+    "mutableSurfaces": { "type": "array", "items": { "type": "string" } },
+    "verifierIds": { "type": "array", "items": { "type": "string" } }
+  }
+}

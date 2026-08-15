@@ -1,0 +1,118 @@
+{
+  "status": "verified",
+  "evidence": [
+    {
+      "id": "project-default-stability",
+      "type": "verifier",
+      "title": "Public default remains unchanged",
+      "summary": "The capability is opt-in.",
+      "supportsClaimIds": [
+        "claim-public-capability"
+      ],
+      "result": "pass",
+      "source": {
+        "id": "project-default-stability-source",
+        "type": "verifier",
+        "label": "Verifier",
+        "timestamp": "2026-08-15T03:03:57.355Z"
+      },
+      "cannotProve": [
+        "This bounded Verifier does not establish general user benefit, production safety, or lower Maintainer workload."
+      ],
+      "replayable": true,
+      "humanConfirmed": false,
+      "handling": "Reference-application evidence; eligible for public export only after the KPR privacy scan passes."
+    },
+    {
+      "id": "project-source-preservation",
+      "type": "verifier",
+      "title": "Source invariant",
+      "summary": "Sources remain visible in the candidate behavior.",
+      "supportsClaimIds": [
+        "claim-invariant-sources"
+      ],
+      "result": "pass",
+      "source": {
+        "id": "project-source-preservation-source",
+        "type": "verifier",
+        "label": "Verifier",
+        "timestamp": "2026-08-15T03:03:57.355Z"
+      },
+      "cannotProve": [
+        "This bounded Verifier does not establish general user benefit, production safety, or lower Maintainer workload."
+      ],
+      "replayable": true,
+      "humanConfirmed": false,
+      "handling": "Reference-application evidence; eligible for public export only after the KPR privacy scan passes."
+    },
+    {
+      "id": "project-scope-boundary",
+      "type": "verifier",
+      "title": "Scope is narrow",
+      "summary": "The feature applies only to Research Brief documents.",
+      "supportsClaimIds": [
+        "claim-public-capability"
+      ],
+      "result": "pass",
+      "source": {
+        "id": "project-scope-boundary-source",
+        "type": "verifier",
+        "label": "Verifier",
+        "timestamp": "2026-08-15T03:03:57.355Z"
+      },
+      "cannotProve": [
+        "This bounded Verifier does not establish general user benefit, production safety, or lower Maintainer workload."
+      ],
+      "replayable": true,
+      "humanConfirmed": false,
+      "handling": "Reference-application evidence; eligible for public export only after the KPR privacy scan passes."
+    },
+    {
+      "id": "project-confirmation",
+      "type": "verifier",
+      "title": "Preference requires confirmation",
+      "summary": "Preference is saved only after user confirmation.",
+      "supportsClaimIds": [
+        "claim-remember-preference"
+      ],
+      "result": "pass",
+      "source": {
+        "id": "project-confirmation-source",
+        "type": "verifier",
+        "label": "Verifier",
+        "timestamp": "2026-08-15T03:03:57.355Z"
+      },
+      "cannotProve": [
+        "This bounded Verifier does not establish general user benefit, production safety, or lower Maintainer workload."
+      ],
+      "replayable": true,
+      "humanConfirmed": false,
+      "handling": "Reference-application evidence; eligible for public export only after the KPR privacy scan passes."
+    },
+    {
+      "id": "project-unsupported-conclusion",
+      "type": "verifier",
+      "title": "Unsupported conclusion guard",
+      "summary": "Every conclusion block must retain at least one linked evidence item.",
+      "supportsClaimIds": [
+        "claim-invariant-sources"
+      ],
+      "result": "pass",
+      "source": {
+        "id": "project-unsupported-conclusion-source",
+        "type": "verifier",
+        "label": "Verifier",
+        "timestamp": "2026-08-15T03:03:57.355Z"
+      },
+      "cannotProve": [
+        "This bounded Verifier does not establish general user benefit, production safety, or lower Maintainer workload."
+      ],
+      "replayable": true,
+      "humanConfirmed": false,
+      "handling": "Reference-application evidence; eligible for public export only after the KPR privacy scan passes.",
+      "details": {
+        "minimumEvidenceLinks": 1
+      }
+    }
+  ]
+}

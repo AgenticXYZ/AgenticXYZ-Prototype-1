@@ -1,0 +1,117 @@
+{
+  "schemaVersion": "0.1.0",
+  "projectId": "research-brief",
+  "productPrinciples": [
+    {
+      "id": "product-source-visible",
+      "category": "product",
+      "title": "Sources stay visible",
+      "statement": "Every public brief must preserve evidence and source links.",
+      "effect": "require_verification",
+      "appliesTo": ["user-side", "maintainer-side", "project"]
+    },
+    {
+      "id": "product-default-stable",
+      "category": "product",
+      "title": "Public defaults remain stable",
+      "statement": "A single user preference cannot silently become the public default.",
+      "effect": "require_approval",
+      "appliesTo": ["maintainer-side", "project"]
+    }
+  ],
+  "safetyRules": [
+    {
+      "id": "safety-no-shell",
+      "category": "safety",
+      "title": "No arbitrary shell",
+      "statement": "Agents may only use allowlisted structured tools.",
+      "effect": "deny",
+      "appliesTo": ["user-side", "maintainer-side", "project"]
+    },
+    {
+      "id": "safety-verifier-completion",
+      "category": "safety",
+      "title": "Verifiers determine completion",
+      "statement": "An Agent message cannot mark a change complete without required verifier results.",
+      "effect": "require_verification",
+      "appliesTo": ["user-side", "project"]
+    }
+  ],
+  "privacyRules": [
+    {
+      "id": "privacy-private-overlay",
+      "category": "privacy",
+      "title": "Private overlay stays local",
+      "statement": "Private preferences are excluded from a KPR unless the contributor explicitly selects them.",
+      "effect": "deny",
+      "appliesTo": ["user-side", "maintainer-side", "project"]
+    },
+    {
+      "id": "privacy-scan-before-submit",
+      "category": "privacy",
+      "title": "Scan before submission",
+      "statement": "KPR submission is blocked until privacy and secret scanning passes.",
+      "effect": "require_verification",
+      "appliesTo": ["user-side"]
+    }
+  ],
+  "contributionRules": [
+    {
+      "id": "contribution-attestation",
+      "category": "contribution",
+      "title": "Human attestation required",
+      "statement": "Agent-extracted claims cannot be submitted as user requirements without contributor attestation.",
+      "effect": "require_approval",
+      "appliesTo": ["user-side"]
+    },
+    {
+      "id": "contribution-blind-reconstruction",
+      "category": "contribution",
+      "title": "Blind reconstruction",
+      "statement": "The Project Agent implements from the approved contract, not the contributor patch.",
+      "effect": "deny",
+      "appliesTo": ["project"]
+    }
+  ],
+  "runtimeRules": [
+    {
+      "id": "runtime-one-provider",
+      "category": "runtime",
+      "title": "One active provider",
+      "statement": "All Agent roles use the same provider and model within a guided run.",
+      "effect": "allow",
+      "appliesTo": ["user-side", "maintainer-side", "project"]
+    },
+    {
+      "id": "runtime-r3-human",
+      "category": "runtime",
+      "title": "Human approval for public state",
+      "statement": "Public adoption and merge remain human decisions.",
+      "effect": "require_approval",
+      "appliesTo": ["project"]
+    }
+  ],
+  "approvalRules": [
+    { "id": "approval-user-overlay", "action": "Apply a reversible User Overlay", "riskLevel": "R1", "requiredActor": "contributor" },
+    { "id": "approval-integration-contract", "action": "Approve Claim Resolutions and the Knowledge Integration Contract", "riskLevel": "R2", "requiredActor": "maintainer" },
+    { "id": "approval-public-adoption", "action": "Adopt a verified Project candidate into public state", "riskLevel": "R3", "requiredActor": "maintainer" }
+  ],
+  "evidenceRequirements": [
+    { "id": "evidence-user-overlay", "appliesTo": "user_overlay", "verifierIds": ["source-preservation", "public-core-unchanged", "reversible-overlay"] },
+    { "id": "evidence-knowledge-gate", "appliesTo": "knowledge_gate", "verifierIds": ["human-attestation", "privacy-scan"] },
+    { "id": "evidence-project-candidate", "appliesTo": "project_candidate", "verifierIds": ["project-default-stability", "project-source-preservation", "project-scope-boundary", "project-confirmation", "project-unsupported-conclusion"] }
+  ],
+  "protectedInvariants": [
+    "Source links remain visible and attached to evidence.",
+    "The public default does not change without Maintainer approval.",
+    "Private preferences are not submitted automatically.",
+    "Project Agent completion requires verifier evidence.",
+    "Final public adoption belongs to the Maintainer."
+  ],
+  "defaultBehavior": {
+    "conclusionFirst": false,
+    "preserveSources": true,
+    "theme": "light",
+    "savePreference": false
+  }
+}

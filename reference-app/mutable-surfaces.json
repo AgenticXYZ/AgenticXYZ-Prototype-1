@@ -1,0 +1,32 @@
+[
+  {
+    "id": "summary-layout",
+    "label": "Summary layout",
+    "category": "interface",
+    "protected": false,
+    "userLocal": true,
+    "projectConfigurable": true,
+    "contributable": true,
+    "reversible": true
+  },
+  {
+    "id": "theme",
+    "label": "Reference visual theme",
+    "category": "interface",
+    "protected": true,
+    "userLocal": false,
+    "projectConfigurable": true,
+    "contributable": false,
+    "reversible": true
+  },
+  {
+    "id": "preference-memory",
+    "label": "Confirmed preference memory",
+    "category": "preference",
+    "protected": false,
+    "userLocal": true,
+    "projectConfigurable": false,
+    "contributable": true,
+    "reversible": true
+  }
+]

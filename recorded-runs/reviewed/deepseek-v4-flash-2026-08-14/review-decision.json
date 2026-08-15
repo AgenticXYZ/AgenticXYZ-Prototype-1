@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "0.1.0",
+  "decision": "approved",
+  "supportScope": "AgenticXYZ Prototype 1 DeepSeek credentialed reference record",
+  "reviewer": {
+    "id": "project-maintainer",
+    "type": "human",
+    "label": "Project Maintainer"
+  },
+  "reviewedAt": "2026-08-14T09:31:10Z",
+  "statement": "批准 DeepSeek 支持记录，并采用 agent-review-brief.zh-CN.md 中列出的 Claim 决定、问题分类与证据边界。",
+  "adoptedBrief": {
+    "file": "agent-review-brief.zh-CN.md",
+    "sha256": "19398fd48b24b32b9fbe96be6f743d16318449af1f9760898b17fad9cd28382f"
+  },
+  "claimDecisions": [
+    {
+      "claimId": "claim-problem",
+      "decision": "accept"
+    },
+    {
+      "claimId": "claim-expected-order",
+      "decision": "accept"
+    },
+    {
+      "claimId": "claim-preserve-sources",
+      "decision": "accept"
+    },
+    {
+      "claimId": "claim-remember-preference",
+      "decision": "accept"
+    },
+    {
+      "claimId": "claim-local-first",
+      "decision": "accept"
+    },
+    {
+      "claimId": "claim-invariant-sources",
+      "decision": "accept"
+    },
+    {
+      "claimId": "claim-public-capability",
+      "decision": "narrow"
+    }
+  ],
+  "maintainerQuestionResolutions": [
+    {
+      "index": 1,
+      "classification": "resolved_by_contract_and_verifier",
+      "decision": "Use the existing project-confirmation verifier; do not add a redundant verifier."
+    },
+    {
+      "index": 2,
+      "classification": "ratified_narrow",
+      "decision": "Narrow the public capability to Research Brief only, experimental, opt-in, with the public default unchanged."
+    },
+    {
+      "index": 3,
+      "classification": "accepted_for_prototype_e2_only",
+      "decision": "Scenario evidence is sufficient for this E2 prototype demonstration and supports no general outcome claim."
+    },
+    {
+      "index": 4,
+      "classification": "required_and_passed",
+      "decision": "Require project-scope-boundary; it passed in the reviewed run."
+    },
+    {
+      "index": 5,
+      "classification": "machine_reexecuted_human_reviewed_not_human_executed",
+      "decision": "Accept the rerun machine Verifiers without relabeling them as human-executed evidence."
+    },
+    {
+      "index": 6,
+      "classification": "non_blocking_documentation_clarification",
+      "decision": "Treat the source invariant as an existing protected rule rather than a new empirical finding."
+    }
+  ],
+  "projectQuestionResolutions": [
+    {
+      "index": 1,
+      "classification": "non_blocking_implementation_clarification",
+      "decision": "Retain conclusion-first-summary as the feature identifier; a future rename cannot change the Contract boundary."
+    },
+    {
+      "index": 2,
+      "classification": "non_blocking_governance_reminder",
+      "decision": "Human Review closes the support-record gate; any public adoption remains a separate human action."
+    }
+  ],
+  "evidenceBoundaries": [
+    "Approval covers the Prototype 1 DeepSeek reference record, not production readiness.",
+    "Approval does not establish lower Maintainer cognitive load, improved contribution quality, general user benefit, or cross-domain generality.",
+    "OpenAI and Anthropic remain Mock Contract covered only and receive no Live support claim.",
+    "The public default remains unchanged; the reviewed capability is Research Brief only, experimental, and opt-in.",
+    "Machine Verifiers remain machine-executed evidence even after Human Review."
+  ]
+}
