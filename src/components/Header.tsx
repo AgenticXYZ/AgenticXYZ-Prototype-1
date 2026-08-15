@@ -11,9 +11,11 @@ export function Header({
   state,
   dispatch,
   language,
-  setLanguage
-}: Omit<ViewProps, "runAgent" | "loadingRole"> & { language: Language; setLanguage: (language: Language) => void }) {
+  setLanguage,
+  staticDemo
+}: Omit<ViewProps, "runAgent" | "loadingRole"> & { language: Language; setLanguage: (language: Language) => void; staticDemo: boolean }) {
   const { t } = useI18n();
+  const displayMode = staticDemo && state.mode === "live" ? "replay" : state.mode;
   function importState(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -50,15 +52,15 @@ export function Header({
           <span className="visually-hidden">{t("Run mode")}</span>
           <select
             aria-label={t("Run mode")}
-            value={state.mode}
+            value={displayMode}
             onChange={(event) => dispatch({ type: "SET_MODE", mode: event.target.value as typeof state.mode })}
           >
             <option value="replay">{t("Recorded Replay")}</option>
             <option value="scripted">{t("Scripted Fallback")}</option>
-            <option value="live">{t("Live Agent")}</option>
+            {!staticDemo && <option value="live">{t("Live Agent")}</option>}
           </select>
         </label>
-        <ProviderSettings config={state.providerConfig} dispatch={dispatch} />
+        {!staticDemo && <ProviderSettings config={state.providerConfig} dispatch={dispatch} />}
         <div className="language-switch" role="group" aria-label={t("Choose language")}>
           <button type="button" className={language === "zh-CN" ? "active" : ""} aria-pressed={language === "zh-CN"} onClick={() => setLanguage("zh-CN")}>中</button>
           <button type="button" className={language === "en" ? "active" : ""} aria-pressed={language === "en"} onClick={() => setLanguage("en")}>EN</button>
@@ -79,11 +81,11 @@ export function Header({
         </details>
       </div>
       <div className="mode-disclosure" role="status">
-        <strong>{t(MODE_LABELS[state.mode])}</strong>
+        <strong>{t(MODE_LABELS[displayMode])}</strong>
         <span>
-          {state.mode === "live"
+          {displayMode === "live"
             ? t("Calls the selected provider through the local gateway.")
-            : state.mode === "replay"
+            : displayMode === "replay"
               ? language === "zh-CN"
                 ? `参考记录 · ${REPLAY_METADATA.provider}/${REPLAY_METADATA.model} · ${REPLAY_METADATA.runDate.slice(0, 10)} · 脱敏审查已通过 · ${REPLAY_METADATA.checksum} · ${REPLAY_METADATA.evidenceLevel} · 不调用模型。`
                 : `Reference fixture · ${REPLAY_METADATA.provider}/${REPLAY_METADATA.model} · ${REPLAY_METADATA.runDate.slice(0, 10)} · redaction ${REPLAY_METADATA.redactionStatus} · ${REPLAY_METADATA.checksum} · ${REPLAY_METADATA.evidenceLevel} · no provider call.`

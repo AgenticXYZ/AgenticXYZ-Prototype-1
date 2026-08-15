@@ -58,13 +58,15 @@ function FocusWorkflowControls({
   dispatch,
   runAgent,
   loadingRole,
-  onSelectReferenceApp
+  onSelectReferenceApp,
+  staticDemo
 }: {
   state: AppState;
   dispatch: React.Dispatch<AppAction>;
   runAgent: (role: AgentRole) => Promise<void>;
   loadingRole?: AgentRole;
   onSelectReferenceApp: (appId: ReferenceAppId) => void;
+  staticDemo: boolean;
 }) {
   const { t } = useI18n();
 
@@ -145,7 +147,7 @@ function FocusWorkflowControls({
           <select aria-label={t("Run mode")} value={state.mode} onChange={(event) => dispatch({ type: "SET_MODE", mode: event.target.value as AppState["mode"] })}>
             <option value="replay">{t("Recorded Replay")}</option>
             <option value="scripted">{t("Scripted Fallback")}</option>
-            <option value="live">{t("Live Agent")}</option>
+            {!staticDemo && <option value="live">{t("Live Agent")}</option>}
           </select>
         </label>
       </header>
@@ -216,9 +218,12 @@ function inferReferenceAction(question: string, activeApp: ReferenceAppId): { ap
   return undefined;
 }
 
-function localAnswer(question: string): { text: string; action: GuideAction } {
+function localAnswer(question: string, staticDemo: boolean): { text: string; action: GuideAction } {
   const normalized = question.toLowerCase();
   if (/api|key|provider|模型|密钥|连接/.test(normalized)) {
+    if (staticDemo) {
+      return { text: "This GitHub Pages build runs static Replay only. It does not accept API keys or call a Provider. Clone the project and use the local Gateway for Provider-backed runs.", action: "none" };
+    }
     return { text: "Open Model API Settings to choose one Provider and model, enter an API key, and verify the connection. The key stays in local Gateway memory and is not written to browser storage or project files.", action: "open_provider" };
   }
   if (/kpr|pull request|知识协作|知识包/.test(normalized)) {
@@ -233,7 +238,9 @@ function localAnswer(question: string): { text: string; action: GuideAction } {
   if (/下一步|怎么操作|如何操作|guide|next|help|引导/.test(normalized)) {
     return { text: "I can take you to the current guided step and point out the next human decision without clicking approval on your behalf.", action: "show_next" };
   }
-  return { text: "I can explain Agentic Software, KPR, Runtime reliability, and human governance; configure the active Provider; or guide you to the next step. In Live Agent mode, I can use the configured Provider for a contextual answer.", action: "show_next" };
+  return staticDemo
+    ? { text: "I can explain Agentic Software, KPR, Runtime reliability, and human governance, or guide you through the recorded workflow. This GitHub Pages build does not call a Provider.", action: "show_next" }
+    : { text: "I can explain Agentic Software, KPR, Runtime reliability, and human governance; configure the active Provider; or guide you to the next step. In Live Agent mode, I can use the configured Provider for a contextual answer.", action: "show_next" };
 }
 
 export function AgentAssistant({
@@ -245,7 +252,8 @@ export function AgentAssistant({
   applicationOnly,
   setApplicationOnly,
   activeReferenceApp,
-  onSelectReferenceApp
+  onSelectReferenceApp,
+  staticDemo
 }: {
   state: AppState;
   dispatch: React.Dispatch<AppAction>;
@@ -256,6 +264,7 @@ export function AgentAssistant({
   setApplicationOnly: (value: boolean) => void;
   activeReferenceApp: ReferenceAppId;
   onSelectReferenceApp: (appId: ReferenceAppId) => void;
+  staticDemo: boolean;
 }) {
   const { t } = useI18n();
   const [open, setOpen] = useState(false);
@@ -264,7 +273,13 @@ export function AgentAssistant({
   const [pointerTarget, setPointerTarget] = useState<string>();
   const [pointerPosition, setPointerPosition] = useState<PointerPosition>();
   const [messages, setMessages] = useState<GuideMessage[]>([
-    { id: "guide-welcome", role: "assistant", text: "I am the AgenticXYZ Guide. This software is also an Agent target: I can configure its Provider, explain its knowledge model, and guide you without taking human decisions." }
+    {
+      id: "guide-welcome",
+      role: "assistant",
+      text: staticDemo
+        ? "I am the AgenticXYZ Guide. This software is also an Agent target: I can explain its knowledge model and guide the static Replay without taking human decisions."
+        : "I am the AgenticXYZ Guide. This software is also an Agent target: I can configure its Provider, explain its knowledge model, and guide you without taking human decisions."
+    }
   ]);
   const logRef = useRef<HTMLDivElement>(null);
   const step = useMemo(() => nextStep(state), [state]);
@@ -333,6 +348,7 @@ export function AgentAssistant({
   }, [open, pointerTarget, state.activeView]);
 
   function openProvider() {
+    if (staticDemo) return;
     window.dispatchEvent(new Event("agenticxyz:open-provider-settings"));
   }
 
@@ -412,7 +428,7 @@ export function AgentAssistant({
         }]);
         return;
       }
-      if (state.mode === "live" && state.providerConfig.available) {
+      if (!staticDemo && state.mode === "live" && state.providerConfig.available) {
         const response = await fetch("/api/guide/chat", {
           method: "POST",
           headers: { "content-type": "application/json" },
@@ -433,12 +449,12 @@ export function AgentAssistant({
         if (!response.ok || !result.answer) throw new Error(result.error ?? "The Guide Agent could not answer.");
         setMessages((items) => [...items, { id: `guide-agent-${Date.now()}`, role: "assistant", text: result.answer!, action: result.action, source: "provider" }]);
       } else {
-        const result = localAnswer(trimmed);
+        const result = localAnswer(trimmed, staticDemo);
         await new Promise((resolve) => window.setTimeout(resolve, 160));
         setMessages((items) => [...items, { id: `guide-local-${Date.now()}`, role: "assistant", text: result.text, action: result.action, source: "local" }]);
       }
     } catch (error) {
-      const fallback = localAnswer(trimmed);
+      const fallback = localAnswer(trimmed, staticDemo);
       setMessages((items) => [...items, {
         id: `guide-fallback-${Date.now()}`,
         role: "assistant",
@@ -465,11 +481,18 @@ export function AgentAssistant({
             <button type="button" onClick={closeGuide} aria-label={t("Close Guide Agent")}>×</button>
           </header>
 
-          <div className="guide-status">
-            <span className={state.providerConfig.available ? "connected" : ""} aria-hidden="true" />
-            <p><strong>{t(state.providerConfig.available ? "Provider ready" : "Provider not configured")}</strong><small>{state.providerConfig.provider} · {state.providerConfig.model}</small></p>
-            <button type="button" onClick={openProvider}>{t("Set up Provider")}</button>
-          </div>
+          {staticDemo ? (
+            <div className="guide-status static-demo">
+              <span className="connected" aria-hidden="true" />
+              <p><strong>{t("Static Replay")}</strong><small>{t("GitHub Pages · no Provider or API key calls")}</small></p>
+            </div>
+          ) : (
+            <div className="guide-status">
+              <span className={state.providerConfig.available ? "connected" : ""} aria-hidden="true" />
+              <p><strong>{t(state.providerConfig.available ? "Provider ready" : "Provider not configured")}</strong><small>{state.providerConfig.provider} · {state.providerConfig.model}</small></p>
+              <button type="button" onClick={openProvider}>{t("Set up Provider")}</button>
+            </div>
+          )}
 
           <div className="guide-view-switch">
             <div><span>{t("View")}</span><strong>{t(applicationOnly ? "Application only" : "Full workbench")}</strong></div>
@@ -495,7 +518,7 @@ export function AgentAssistant({
             </section>
           )}
 
-          {applicationOnly && !modifiableReferenceApp && <FocusWorkflowControls state={state} dispatch={dispatch} runAgent={runAgent} loadingRole={loadingRole} onSelectReferenceApp={onSelectReferenceApp} />}
+          {applicationOnly && !modifiableReferenceApp && <FocusWorkflowControls state={state} dispatch={dispatch} runAgent={runAgent} loadingRole={loadingRole} onSelectReferenceApp={onSelectReferenceApp} staticDemo={staticDemo} />}
 
           <div className="guide-messages" ref={logRef} aria-live="polite">
             {messages.map((message) => (
@@ -540,7 +563,7 @@ export function AgentAssistant({
         }}
       >
         <span aria-hidden="true"><b>XYZ</b></span>
-        <em className={state.providerConfig.available ? "connected" : ""} aria-hidden="true" />
+        <em className={staticDemo || state.providerConfig.available ? "connected" : ""} aria-hidden="true" />
       </button>
       {open && pointerTarget && pointerPosition && (
         <div

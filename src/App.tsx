@@ -19,13 +19,15 @@ import { LanguageProvider, type Language } from "./i18n";
 const STORAGE_KEY = "agenticxyz-prototype-1-state";
 const LANGUAGE_STORAGE_KEY = "agenticxyz-language";
 const APPLICATION_ONLY_STORAGE_KEY = "agenticxyz-application-only";
+const STATIC_DEMO = import.meta.env.VITE_STATIC_DEMO === "true";
 
 function initializeState(): AppState {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (!stored) return createInitialState();
     const parsed = JSON.parse(stored) as AppState;
-    return parsed.version === "0.1.0" && parsed.manifest?.projectId === "research-brief" ? normalizeAppState(parsed) : createInitialState();
+    const initial = parsed.version === "0.1.0" && parsed.manifest?.projectId === "research-brief" ? normalizeAppState(parsed) : createInitialState();
+    return STATIC_DEMO && initial.mode === "live" ? { ...initial, mode: "replay" } : initial;
   } catch {
     return createInitialState();
   }
@@ -54,7 +56,7 @@ export default function App() {
   }, [applicationOnly]);
 
   useEffect(() => {
-    if (import.meta.env.VITE_STATIC_DEMO === "true") return;
+    if (STATIC_DEMO) return;
     void fetch("/api/health")
       .then(async (response) => {
         if (!response.ok) throw new Error("Gateway unavailable");
@@ -81,11 +83,16 @@ export default function App() {
       });
   }, []);
 
+  useEffect(() => {
+    if (STATIC_DEMO && state.mode === "live") dispatch({ type: "SET_MODE", mode: "replay" });
+  }, [state.mode]);
+
   const runAgent = useCallback(async (role: AgentRole) => {
     if (loadingRole) return;
     setLoadingRole(role);
-    if (state.mode !== "live") {
-      const result = fallbackResponse(state.mode, role, state.kpr);
+    const runMode = STATIC_DEMO && state.mode === "live" ? "replay" : state.mode;
+    if (runMode !== "live") {
+      const result = fallbackResponse(runMode, role, state.kpr);
       await new Promise((resolve) => setTimeout(resolve, 320));
       dispatch({ type: "APPLY_AGENT_RESPONSE", run: result.run, proposal: result.proposal });
       setLoadingRole(undefined);
@@ -159,8 +166,8 @@ export default function App() {
         data-application-only={applicationOnly}
       >
         {applicationOnly
-          ? <ProviderSettings config={state.providerConfig} dispatch={dispatch} showTrigger={false} />
-          : <Header state={state} dispatch={dispatch} language={language} setLanguage={setLanguage} />}
+          ? !STATIC_DEMO && <ProviderSettings config={state.providerConfig} dispatch={dispatch} showTrigger={false} />
+          : <Header state={state} dispatch={dispatch} language={language} setLanguage={setLanguage} staticDemo={STATIC_DEMO} />}
         <div className={`app-body${state.showRuntime && !applicationOnly ? " runtime-open" : ""}`}>
           {!applicationOnly && <Navigation state={state} dispatch={dispatch} />}
           {(applicationOnly || state.activeView === "user") && (
@@ -184,6 +191,7 @@ export default function App() {
           setApplicationOnly={setApplicationOnly}
           activeReferenceApp={activeReferenceApp}
           onSelectReferenceApp={selectReferenceApp}
+          staticDemo={STATIC_DEMO}
         />
         <Notifications state={state} dispatch={dispatch} />
       </div>

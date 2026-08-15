@@ -135,6 +135,12 @@ The workbench includes multiple software targets so the central application is v
 
 Every application contains a draggable **Local XYZ Agent** whose scope ends at that application. The fixed bottom-right **Global XYZ Agent** can guide the whole workbench, configure the Provider, switch views and applications, explain concepts, and point to the next action. Local and Global Agents share governed capability state, but their authority boundaries are different and visible.
 
+## Try the static replay
+
+[Open the GitHub Pages demo](https://zhangshea.github.io/AgenticXYZ-Prototype-1/).
+
+The Pages build runs **Recorded Replay** and **Scripted Fallback** entirely in the browser. It does not run the localhost Gateway, accept API keys, call OpenAI, Anthropic, or DeepSeek, or produce new Live Agent evidence. For Provider-backed runs, clone the project and use the local setup below.
+
 ## Run locally
 
 Requirements: Node.js 20 or newer and npm.

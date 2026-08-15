@@ -135,6 +135,12 @@ Failure Laboratory 展示缺少 Human Attestation、隐私泄漏、Policy 冲突
 
 每个应用都有一个可以拖动的 **局部 XYZ 助手**，作用域只限当前应用。固定在右下角的 **全局 XYZ 助手** 可以引导整个工作台、设置 Provider、切换视图与应用、解释概念并指出下一步操作。局部和全局助手共享受治理的能力状态，但两者的权限边界不同，而且始终可见。
 
+## 在线体验静态回放
+
+[打开 GitHub Pages Demo](https://zhangshea.github.io/AgenticXYZ-Prototype-1/)。
+
+Pages 版本只在浏览器中运行 **Recorded Replay** 和 **Scripted Fallback**。它不运行本地 Gateway，不接收 API Key，不调用 OpenAI、Anthropic 或 DeepSeek，也不会生成新的 Live Agent 证据。需要接入真实 Provider 时，请克隆项目并按照下方方式在本地运行。
+
 ## 本地运行
 
 环境要求：Node.js 20 或更新版本，以及 npm。
