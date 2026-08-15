@@ -87,6 +87,10 @@ The software knowledge is separated into **Developer Intent / Policy**, a shared
 
 A KPR is not a larger PR description. Its primary review object is what the project might learn: the problem, intended and expected behavior, acceptance criteria, Claims, provenance, evidence, counterexamples, uncertainty, protected invariants, and Human Attestation.
 
+![KPR process overview comparing issue-based, traditional PR, and knowledge-first workflows](docs/images/kpr-process-overview.png)
+
+*Source: [Knowledge-Based Pull Requests (arXiv:2606.26721)](https://arxiv.org/abs/2606.26721).*
+
 ![Knowledge Diff, provenance, and Human Attestation in the KPR Bridge](screenshots/canonical/05-knowledge-diff-provenance.png)
 
 The user's local implementation remains visible as evidence that a behavior worked in one bounded environment. It is not treated as implementation authority for the public project.

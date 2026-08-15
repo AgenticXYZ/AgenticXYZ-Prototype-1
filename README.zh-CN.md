@@ -87,6 +87,10 @@ Prototype 1 可以被概括为三个行动原则：
 
 KPR 不是一段更长的 PR 描述。它首先让开发者审查项目可能吸收的知识：问题、意图与预期行为、验收标准、Claim、来源、证据、反例、不确定性、受保护不变量和 Human Attestation。
 
+![KPR 流程概览：Issue-based、传统 PR 与知识优先工作流的对比](docs/images/kpr-process-overview.png)
+
+*来源：[Knowledge-Based Pull Requests（arXiv:2606.26721）](https://arxiv.org/abs/2606.26721)。*
+
 ![KPR Bridge 中的 Knowledge Diff、来源与 Human Attestation](screenshots/canonical/zh-CN/05-knowledge-diff-provenance.png)
 
 用户本地的实现仍然是证据，可以说明一个行为曾经在特定环境中成立；但它不是公共项目的实现权威。
