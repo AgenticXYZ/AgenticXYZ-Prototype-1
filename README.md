@@ -137,7 +137,7 @@ Every application contains a draggable **Local XYZ Agent** whose scope ends at t
 
 ## Try the static replay
 
-[Open the GitHub Pages demo](https://zhangshea.github.io/AgenticXYZ-Prototype-1/).
+[Open the GitHub Pages demo](https://agenticxyz.github.io/AgenticXYZ-Prototype-1/).
 
 The Pages build runs **Recorded Replay** and **Scripted Fallback** entirely in the browser. It does not run the localhost Gateway, accept API keys, call OpenAI, Anthropic, or DeepSeek, or produce new Live Agent evidence. For Provider-backed runs, clone the project and use the local setup below.
 

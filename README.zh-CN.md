@@ -137,7 +137,7 @@ Failure Laboratory 展示缺少 Human Attestation、隐私泄漏、Policy 冲突
 
 ## 在线体验静态回放
 
-[打开 GitHub Pages Demo](https://zhangshea.github.io/AgenticXYZ-Prototype-1/)。
+[打开 GitHub Pages Demo](https://agenticxyz.github.io/AgenticXYZ-Prototype-1/)。
 
 Pages 版本只在浏览器中运行 **Recorded Replay** 和 **Scripted Fallback**。它不运行本地 Gateway，不接收 API Key，不调用 OpenAI、Anthropic 或 DeepSeek，也不会生成新的 Live Agent 证据。需要接入真实 Provider 时，请克隆项目并按照下方方式在本地运行。
 
